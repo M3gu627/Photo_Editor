@@ -10,3 +10,4 @@ Escape - Deselect photo
 Enter - Add Photo
 
 (Experiement if i can crumb all the codes into one index and also do API functionalites.)
+(Practice Website for deployment of ads)
