@@ -18,16 +18,16 @@
         }
 
         :root {
-    --primary: #ffffff;          /* main buttons & highlights */
-    --secondary: #111111;        /* secondary buttons */
-    --accent: #ffffff;           /* accent lines & film strip */
-    --border: #ffffff;           /* borders */
-    --bg: #000000;               /* page background */
-    --card: #0d0d0d;             /* panels / cards */
-    --text: #ffffff;             /* main text */
-    --text-muted: #b3b3b3;       /* muted text */
-    --shadow: rgba(255, 255, 255, 0.08);
-}
+            --primary: #ffffff;          /* main buttons & highlights */
+            --secondary: #111111;        /* secondary buttons */
+            --accent: #ffffff;           /* accent lines & film strip */
+            --border: #ffffff;           /* borders */
+            --bg: #000000;               /* page background */
+            --card: #0d0d0d;             /* panels / cards */
+            --text: #ffffff;             /* main text */
+            --text-muted: #b3b3b3;       /* muted text */
+            --shadow: rgba(255, 255, 255, 0.08);
+        }
 
 
         body {
@@ -459,7 +459,7 @@
         };
 
         function PhotoLayoutApp() {
-            const [images, setImages] = useState({}); // Store multiple images by ID
+            const [images, setImages] = useState({}); 
             const [currentImageId, setCurrentImageId] = useState(null);
             const [photoSize, setPhotoSize] = useState('6R');
             const [customWidth, setCustomWidth] = useState(100);
@@ -473,7 +473,7 @@
             const [dragging, setDragging] = useState(false);
             const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
             const [resizing, setResizing] = useState(null);
-            const [exportFormat, setExportFormat] = useState('png'); // 'png' or 'jpg'
+            const [exportFormat, setExportFormat] = useState('png'); 
             const canvasRef = useRef(null);
             const fileInputRef = useRef(null);
 
@@ -539,17 +539,14 @@
 
             useEffect(() => {
                 drawLayout();
-            }, [photos, paperSize, showBorder, borderWidth, borderColor, selectedPhoto, images]);
+            }, [photos, paperSize, showBorder, borderWidth, borderColor, selectedPhoto, images, dragging]);
 
             useEffect(() => {
                 const handleKeyDown = (e) => {
-                    // Delete/Backspace - delete selected photo
                     if ((e.key === 'Delete' || e.key === 'Backspace') && selectedPhoto !== null) {
                         e.preventDefault();
                         deleteSelectedPhoto();
                     }
-                    
-                    // Ctrl+C or Cmd+C - copy
                     if ((e.ctrlKey || e.metaKey) && e.key === 'c' && selectedPhoto !== null) {
                         e.preventDefault();
                         const photoToCopy = photos.find(p => p.id === selectedPhoto);
@@ -557,8 +554,6 @@
                             sessionStorage.setItem('copiedPhoto', JSON.stringify(photoToCopy));
                         }
                     }
-                    
-                    // Ctrl+V or Cmd+V - paste
                     if ((e.ctrlKey || e.metaKey) && e.key === 'v') {
                         e.preventDefault();
                         const copiedPhoto = sessionStorage.getItem('copiedPhoto');
@@ -574,81 +569,59 @@
                             setSelectedPhoto(newPhoto.id);
                         }
                     }
-                    
-                    // Ctrl+D or Cmd+D - duplicate
                     if ((e.ctrlKey || e.metaKey) && e.key === 'd' && selectedPhoto !== null) {
                         e.preventDefault();
                         duplicateSelectedPhoto();
                     }
-                    
-                    // Ctrl+A or Cmd+A - select all (prevent default browser behavior)
                     if ((e.ctrlKey || e.metaKey) && e.key === 'a') {
                         e.preventDefault();
                     }
-                    
-                    // R - rotate right
                     if (e.key === 'r' && selectedPhoto !== null && !e.ctrlKey && !e.metaKey) {
                         e.preventDefault();
                         rotateRight();
                     }
-                    
-                    // L - rotate left
                     if (e.key === 'l' && selectedPhoto !== null && !e.ctrlKey && !e.metaKey) {
                         e.preventDefault();
                         rotateLeft();
                     }
-                    
-                    // Arrow keys - move selected photo
                     if (selectedPhoto !== null && ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
                         e.preventDefault();
                         const moveAmount = e.shiftKey ? 10 : 1;
-                        
                         setPhotos(photos.map(p => {
                             if (p.id === selectedPhoto) {
                                 let newX = p.x;
                                 let newY = p.y;
-                                
                                 if (e.key === 'ArrowLeft') newX -= moveAmount;
                                 if (e.key === 'ArrowRight') newX += moveAmount;
                                 if (e.key === 'ArrowUp') newY -= moveAmount;
                                 if (e.key === 'ArrowDown') newY += moveAmount;
-                                
                                 return { ...p, x: newX, y: newY };
                             }
                             return p;
                         }));
                     }
-                    
-                    // Escape - deselect
                     if (e.key === 'Escape') {
                         setSelectedPhoto(null);
                     }
-                    
-                    // Enter - add photo
                     if (e.key === 'Enter' && currentImageId && !e.ctrlKey && !e.metaKey) {
                         e.preventDefault();
                         addPhoto();
                     }
                 };
-
                 window.addEventListener('keydown', handleKeyDown);
                 return () => window.removeEventListener('keydown', handleKeyDown);
             }, [photos, selectedPhoto, currentImageId]);
 
             const addPhoto = () => {
                 if (!currentImageId || !images[currentImageId]) return;
-
-                const canvas = canvasRef.current;
                 const paper = PAPER_SIZES[paperSize];
                 const photoSizeData = photoSize === 'custom' 
                     ? { width: customWidth, height: customHeight }
                     : PHOTO_SIZES[photoSize];
                 const dpi = 300;
                 const scale = dpi / 25.4;
-
                 const photoWidthPx = photoSizeData.width * scale;
                 const photoHeightPx = photoSizeData.height * scale;
-
                 const newPhoto = {
                     id: Date.now(),
                     x: 50,
@@ -657,9 +630,8 @@
                     height: photoHeightPx,
                     photoSize: photoSize,
                     rotation: 0,
-                    imageId: currentImageId // Store which image this photo uses
+                    imageId: currentImageId 
                 };
-
                 setPhotos([...photos, newPhoto]);
                 setSelectedPhoto(newPhoto.id);
             };
@@ -692,16 +664,6 @@
                 setSelectedPhoto(null);
             };
 
-            const rotateSelectedPhoto = () => {
-                if (selectedPhoto !== null) {
-                    setPhotos(photos.map(p => 
-                        p.id === selectedPhoto 
-                            ? { ...p, rotation: (p.rotation + 90) % 360 }
-                            : p
-                    ));
-                }
-            };
-
             const rotateLeft = () => {
                 if (selectedPhoto !== null) {
                     setPhotos(photos.map(p => 
@@ -725,39 +687,26 @@
             const drawLayout = () => {
                 const canvas = canvasRef.current;
                 if (!canvas) return;
-
                 const ctx = canvas.getContext('2d');
                 const paper = PAPER_SIZES[paperSize];
                 const dpi = 300;
                 const scale = dpi / 25.4;
-                
                 canvas.width = paper.width * scale;
                 canvas.height = paper.height * scale;
-
-                // Fill with white background
                 ctx.fillStyle = 'white';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-                // Draw each photo
                 photos.forEach(photo => {
                     const imageData = images[photo.imageId];
                     if (!imageData || !imageData.img) return;
-                    
                     const image = imageData.img;
-
                     ctx.save();
-
-                    // Translate to photo position
                     ctx.translate(photo.x + photo.width / 2, photo.y + photo.height / 2);
                     ctx.rotate((photo.rotation * Math.PI) / 180);
                     ctx.translate(-photo.width / 2, -photo.height / 2);
-
-                    // Calculate aspect ratios
                     const photoAspect = photo.width / photo.height;
                     const imageAspect = image.width / image.height;
-
                     let sx, sy, sWidth, sHeight;
-
                     if (imageAspect > photoAspect) {
                         sHeight = image.height;
                         sWidth = image.height * photoAspect;
@@ -769,108 +718,93 @@
                         sx = 0;
                         sy = (image.height - sHeight) / 2;
                     }
-
-                    // Draw image
-                    ctx.drawImage(
-                        image,
-                        sx, sy, sWidth, sHeight,
-                        0, 0, photo.width, photo.height
-                    );
-
-                    // Draw border
+                    ctx.drawImage(image, sx, sy, sWidth, sHeight, 0, 0, photo.width, photo.height);
                     if (showBorder) {
                         ctx.strokeStyle = borderColor;
                         ctx.lineWidth = borderWidth;
                         ctx.strokeRect(0, 0, photo.width, photo.height);
                     }
-
-                    // Draw selection outline
                     if (photo.id === selectedPhoto) {
                         ctx.strokeStyle = '#00d9ff';
                         ctx.lineWidth = 3;
                         ctx.setLineDash([5, 5]);
                         ctx.strokeRect(-5, -5, photo.width + 10, photo.height + 10);
                         ctx.setLineDash([]);
-
-                        // Draw resize handles
                         const handleSize = 10;
                         ctx.fillStyle = '#00d9ff';
-                        
-                        // Corner handles
                         ctx.fillRect(-handleSize/2, -handleSize/2, handleSize, handleSize);
                         ctx.fillRect(photo.width - handleSize/2, -handleSize/2, handleSize, handleSize);
                         ctx.fillRect(-handleSize/2, photo.height - handleSize/2, handleSize, handleSize);
                         ctx.fillRect(photo.width - handleSize/2, photo.height - handleSize/2, handleSize, handleSize);
                     }
-
                     ctx.restore();
+
+                    // --- DRAW ALIGNMENT GUIDES ---
+                    if (photo.id === selectedPhoto && dragging) {
+                        ctx.save();
+                        ctx.strokeStyle = '#ff00ff';
+                        ctx.lineWidth = 2;
+                        ctx.setLineDash([10, 10]);
+                        photos.forEach(other => {
+                            if (other.id === selectedPhoto) return;
+                            // Vertical guides
+                            if (Math.abs(photo.x - other.x) < 1) { ctx.beginPath(); ctx.moveTo(other.x, 0); ctx.lineTo(other.x, canvas.height); ctx.stroke(); }
+                            if (Math.abs((photo.x + photo.width) - (other.x + other.width)) < 1) { ctx.beginPath(); ctx.moveTo(other.x + other.width, 0); ctx.lineTo(other.x + other.width, canvas.height); ctx.stroke(); }
+                            if (Math.abs((photo.x + photo.width / 2) - (other.x + other.width / 2)) < 1) { ctx.beginPath(); ctx.moveTo(other.x + other.width / 2, 0); ctx.lineTo(other.x + other.width / 2, canvas.height); ctx.stroke(); }
+                            // Horizontal guides
+                            if (Math.abs(photo.y - other.y) < 1) { ctx.beginPath(); ctx.moveTo(0, other.y); ctx.lineTo(canvas.width, other.y); ctx.stroke(); }
+                            if (Math.abs((photo.y + photo.height) - (other.y + other.height)) < 1) { ctx.beginPath(); ctx.moveTo(0, other.y + other.height); ctx.lineTo(canvas.width, other.y + other.height); ctx.stroke(); }
+                            if (Math.abs((photo.y + photo.height / 2) - (other.y + other.height / 2)) < 1) { ctx.beginPath(); ctx.moveTo(0, other.y + other.height / 2); ctx.lineTo(canvas.width, other.y + other.height / 2); ctx.stroke(); }
+                        });
+                        ctx.restore();
+                    }
                 });
             };
 
             const getPhotoAtPosition = (x, y) => {
                 const canvas = canvasRef.current;
                 if (!canvas) return null;
-
                 const rect = canvas.getBoundingClientRect();
                 const scaleX = canvas.width / rect.width;
                 const scaleY = canvas.height / rect.height;
-
                 const canvasX = (x - rect.left) * scaleX;
                 const canvasY = (y - rect.top) * scaleY;
-
-                // Check photos in reverse order (top to bottom)
                 for (let i = photos.length - 1; i >= 0; i--) {
                     const photo = photos[i];
-                    
                     if (canvasX >= photo.x && canvasX <= photo.x + photo.width &&
                         canvasY >= photo.y && canvasY <= photo.y + photo.height) {
                         return photo;
                     }
                 }
-
                 return null;
             };
 
             const getResizeHandle = (photo, x, y) => {
                 if (!photo) return null;
-
                 const canvas = canvasRef.current;
                 const rect = canvas.getBoundingClientRect();
                 const scaleX = canvas.width / rect.width;
                 const scaleY = canvas.height / rect.height;
-
                 const canvasX = (x - rect.left) * scaleX;
                 const canvasY = (y - rect.top) * scaleY;
-
-                const handleSize = 10;
                 const threshold = 15;
-
-                // Check corner handles
                 const corners = [
                     { name: 'nw', x: photo.x, y: photo.y },
                     { name: 'ne', x: photo.x + photo.width, y: photo.y },
                     { name: 'sw', x: photo.x, y: photo.y + photo.height },
                     { name: 'se', x: photo.x + photo.width, y: photo.y + photo.height }
                 ];
-
                 for (const corner of corners) {
-                    if (Math.abs(canvasX - corner.x) < threshold && 
-                        Math.abs(canvasY - corner.y) < threshold) {
-                        return corner.name;
-                    }
+                    if (Math.abs(canvasX - corner.x) < threshold && Math.abs(canvasY - corner.y) < threshold) return corner.name;
                 }
-
                 return null;
             };
 
             const handleMouseDown = (e) => {
                 const photo = getPhotoAtPosition(e.clientX, e.clientY);
-                
                 if (photo) {
                     setSelectedPhoto(photo.id);
-                    
                     const handle = getResizeHandle(photo, e.clientX, e.clientY);
-                    
                     if (handle) {
                         setResizing({ photoId: photo.id, handle });
                     } else {
@@ -879,14 +813,9 @@
                         const rect = canvas.getBoundingClientRect();
                         const scaleX = canvas.width / rect.width;
                         const scaleY = canvas.height / rect.height;
-                        
                         const canvasX = (e.clientX - rect.left) * scaleX;
                         const canvasY = (e.clientY - rect.top) * scaleY;
-                        
-                        setDragOffset({
-                            x: canvasX - photo.x,
-                            y: canvasY - photo.y
-                        });
+                        setDragOffset({ x: canvasX - photo.x, y: canvasY - photo.y });
                     }
                 } else {
                     setSelectedPhoto(null);
@@ -896,62 +825,49 @@
             const handleMouseMove = (e) => {
                 const canvas = canvasRef.current;
                 if (!canvas) return;
-
                 const rect = canvas.getBoundingClientRect();
                 const scaleX = canvas.width / rect.width;
                 const scaleY = canvas.height / rect.height;
-
                 const canvasX = (e.clientX - rect.left) * scaleX;
                 const canvasY = (e.clientY - rect.top) * scaleY;
 
                 if (dragging && selectedPhoto !== null) {
-                    setPhotos(photos.map(p => 
-                        p.id === selectedPhoto 
-                            ? { ...p, x: canvasX - dragOffset.x, y: canvasY - dragOffset.y }
-                            : p
-                    ));
+                    let newX = canvasX - dragOffset.x;
+                    let newY = canvasY - dragOffset.y;
+                    const activePhoto = photos.find(p => p.id === selectedPhoto);
+                    const SNAP_THRESHOLD = 15;
+
+                    photos.forEach(other => {
+                        if (other.id === selectedPhoto) return;
+                        // X snapping
+                        const xPoints = [other.x, other.x + other.width, other.x + other.width / 2];
+                        xPoints.forEach(pt => {
+                            if (Math.abs(newX - pt) < SNAP_THRESHOLD) newX = pt;
+                            if (Math.abs((newX + activePhoto.width) - pt) < SNAP_THRESHOLD) newX = pt - activePhoto.width;
+                            if (Math.abs((newX + activePhoto.width / 2) - pt) < SNAP_THRESHOLD) newX = pt - activePhoto.width / 2;
+                        });
+                        // Y snapping
+                        const yPoints = [other.y, other.y + other.height, other.y + other.height / 2];
+                        yPoints.forEach(pt => {
+                            if (Math.abs(newY - pt) < SNAP_THRESHOLD) newY = pt;
+                            if (Math.abs((newY + activePhoto.height) - pt) < SNAP_THRESHOLD) newY = pt - activePhoto.height;
+                            if (Math.abs((newY + activePhoto.height / 2) - pt) < SNAP_THRESHOLD) newY = pt - activePhoto.height / 2;
+                        });
+                    });
+                    setPhotos(photos.map(p => p.id === selectedPhoto ? { ...p, x: newX, y: newY } : p));
                 } else if (resizing) {
                     const photo = photos.find(p => p.id === resizing.photoId);
                     if (!photo) return;
-
-                    const photoSize = PHOTO_SIZES[photo.photoSize];
-                    const aspectRatio = photoSize.width / photoSize.height;
-
-                    let newWidth = photo.width;
-                    let newHeight = photo.height;
-                    let newX = photo.x;
-                    let newY = photo.y;
-
+                    const photoSizeObj = PHOTO_SIZES[photo.photoSize] || { width: customWidth, height: customHeight };
+                    const aspectRatio = photoSizeObj.width / photoSizeObj.height;
+                    let newWidth = photo.width, newHeight = photo.height, newX = photo.x, newY = photo.y;
                     switch (resizing.handle) {
-                        case 'se':
-                            newWidth = canvasX - photo.x;
-                            newHeight = newWidth / aspectRatio;
-                            break;
-                        case 'sw':
-                            newWidth = photo.x + photo.width - canvasX;
-                            newHeight = newWidth / aspectRatio;
-                            newX = canvasX;
-                            break;
-                        case 'ne':
-                            newWidth = canvasX - photo.x;
-                            newHeight = newWidth / aspectRatio;
-                            newY = photo.y + photo.height - newHeight;
-                            break;
-                        case 'nw':
-                            newWidth = photo.x + photo.width - canvasX;
-                            newHeight = newWidth / aspectRatio;
-                            newX = canvasX;
-                            newY = photo.y + photo.height - newHeight;
-                            break;
+                        case 'se': newWidth = canvasX - photo.x; newHeight = newWidth / aspectRatio; break;
+                        case 'sw': newWidth = photo.x + photo.width - canvasX; newHeight = newWidth / aspectRatio; newX = canvasX; break;
+                        case 'ne': newWidth = canvasX - photo.x; newHeight = newWidth / aspectRatio; newY = photo.y + photo.height - newHeight; break;
+                        case 'nw': newWidth = photo.x + photo.width - canvasX; newHeight = newWidth / aspectRatio; newX = canvasX; newY = photo.y + photo.height - newHeight; break;
                     }
-
-                    if (newWidth > 50 && newHeight > 50) {
-                        setPhotos(photos.map(p => 
-                            p.id === resizing.photoId 
-                                ? { ...p, width: newWidth, height: newHeight, x: newX, y: newY }
-                                : p
-                        ));
-                    }
+                    if (newWidth > 50 && newHeight > 50) setPhotos(photos.map(p => p.id === resizing.photoId ? { ...p, width: newWidth, height: newHeight, x: newX, y: newY } : p));
                 }
             };
 
@@ -963,31 +879,21 @@
             const downloadAsPDF = async () => {
                 const canvas = canvasRef.current;
                 if (!canvas) return;
-
                 const { jsPDF } = window.jspdf;
                 const paper = PAPER_SIZES[paperSize];
-
                 const orientation = paper.width > paper.height ? 'landscape' : 'portrait';
-                const pdf = new jsPDF({
-                    orientation: orientation,
-                    unit: 'mm',
-                    format: [paper.width, paper.height]
-                });
-
+                const pdf = new jsPDF({ orientation: orientation, unit: 'mm', format: [paper.width, paper.height] });
                 const imgData = canvas.toDataURL('image/jpeg', 1.0);
                 pdf.addImage(imgData, 'JPEG', 0, 0, paper.width, paper.height);
-                
                 pdf.save(`photo-layout-${paperSize}.pdf`);
             };
 
             const downloadAsImage = () => {
                 const canvas = canvasRef.current;
                 if (!canvas) return;
-
                 const mimeType = exportFormat === 'jpg' ? 'image/jpeg' : 'image/png';
                 const extension = exportFormat === 'jpg' ? 'jpg' : 'png';
                 const quality = exportFormat === 'jpg' ? 0.95 : undefined;
-
                 canvas.toBlob((blob) => {
                     const url = URL.createObjectURL(blob);
                     const a = document.createElement('a');
@@ -1010,20 +916,12 @@
                         </h1>
                         <p>Professional photo arrangement tool</p>
                     </div>
-
                     <div className="main-grid">
                         <div className="panel">
                             <h2>Controls</h2>
-                            
                             <div className="form-group">
                                 <label>Upload Image</label>
-                                <div 
-                                    className="upload-area"
-                                    onClick={() => fileInputRef.current?.click()}
-                                    onDrop={handleDrop}
-                                    onDragOver={handleDragOver}
-                                    onDragLeave={handleDragLeave}
-                                >
+                                <div className="upload-area" onClick={() => fileInputRef.current?.click()} onDrop={handleDrop} onDragOver={handleDragOver} onDragLeave={handleDragLeave}>
                                     <div className="upload-icon">
                                         <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{opacity: 0.6}}>
                                             <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
@@ -1031,348 +929,83 @@
                                         </svg>
                                     </div>
                                     <p><strong>Click to upload</strong> or drag and drop</p>
-                                    <p style={{fontSize: '0.85rem', marginTop: '0.5rem', opacity: 0.7}}>
-                                        PNG, JPG, JPEG
-                                    </p>
+                                    <p style={{fontSize: '0.85rem', marginTop: '0.5rem', opacity: 0.7}}>PNG, JPG, JPEG</p>
                                 </div>
-                                <input 
-                                    ref={fileInputRef}
-                                    type="file" 
-                                    accept="image/*" 
-                                    onChange={handleFileChange}
-                                />
+                                <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileChange} />
                             </div>
-
                             {Object.keys(images).length > 0 && (
                                 <div className="form-group">
                                     <label>Library ({Object.keys(images).length})</label>
-                                    <div style={{
-                                        display: 'grid',
-                                        gridTemplateColumns: 'repeat(3, 1fr)',
-                                        gap: '0.5rem',
-                                        marginTop: '0.5rem'
-                                    }}>
+                                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.5rem', marginTop: '0.5rem' }}>
                                         {Object.values(images).map(img => (
-                                            <div
-                                                key={img.id}
-                                                onClick={() => setCurrentImageId(img.id)}
-                                                style={{
-                                                    position: 'relative',
-                                                    cursor: 'pointer',
-                                                    border: currentImageId === img.id ? '2px solid var(--primary)' : '1px solid var(--border)',
-                                                    borderRadius: '4px',
-                                                    overflow: 'hidden',
-                                                    aspectRatio: '1',
-                                                    transition: 'all 0.2s'
-                                                }}
-                                            >
-                                                <img 
-                                                    src={img.data} 
-                                                    alt={img.name}
-                                                    style={{
-                                                        width: '100%',
-                                                        height: '100%',
-                                                        objectFit: 'cover'
-                                                    }}
-                                                />
-                                                {currentImageId === img.id && (
-                                                    <div style={{
-                                                        position: 'absolute',
-                                                        top: '4px',
-                                                        right: '4px',
-                                                        background: 'var(--primary)',
-                                                        color: 'white',
-                                                        borderRadius: '50%',
-                                                        width: '18px',
-                                                        height: '18px',
-                                                        display: 'flex',
-                                                        alignItems: 'center',
-                                                        justifyContent: 'center',
-                                                        fontSize: '10px',
-                                                        fontWeight: 'bold'
-                                                    }}>
-                                                        ✓
-                                                    </div>
-                                                )}
+                                            <div key={img.id} onClick={() => setCurrentImageId(img.id)} style={{ position: 'relative', cursor: 'pointer', border: currentImageId === img.id ? '2px solid var(--primary)' : '1px solid var(--border)', borderRadius: '4px', overflow: 'hidden', aspectRatio: '1', transition: 'all 0.2s' }}>
+                                                <img src={img.data} alt={img.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                {currentImageId === img.id && ( <div style={{ position: 'absolute', top: '4px', right: '4px', background: 'var(--primary)', color: 'white', borderRadius: '50%', width: '18px', height: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: 'bold' }}>✓</div> )}
                                             </div>
                                         ))}
                                     </div>
                                 </div>
                             )}
-
                             <div className="settings-grid">
                                 <div className="form-group">
                                     <label>Photo Size</label>
                                     <select value={photoSize} onChange={(e) => setPhotoSize(e.target.value)}>
-                                        {Object.entries(PHOTO_SIZES).map(([key, value]) => (
-                                            <option key={key} value={key}>{value.label}</option>
-                                        ))}
+                                        {Object.entries(PHOTO_SIZES).map(([key, value]) => ( <option key={key} value={key}>{value.label}</option> ))}
                                     </select>
                                 </div>
-
                                 <div className="form-group">
                                     <label>Paper Size</label>
                                     <select value={paperSize} onChange={(e) => setPaperSize(e.target.value)}>
-                                        {Object.entries(PAPER_SIZES).map(([key, value]) => (
-                                            <option key={key} value={key}>{value.label}</option>
-                                        ))}
+                                        {Object.entries(PAPER_SIZES).map(([key, value]) => ( <option key={key} value={key}>{value.label}</option> ))}
                                     </select>
                                 </div>
                             </div>
-
                             {photoSize === 'custom' && (
                                 <div className="settings-grid" style={{marginTop: '1rem'}}>
-                                    <div className="form-group">
-                                        <label>Width (mm)</label>
-                                        <input 
-                                            type="number" 
-                                            value={customWidth} 
-                                            onChange={(e) => setCustomWidth(Number(e.target.value))}
-                                            min="10"
-                                            max="300"
-                                        />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Height (mm)</label>
-                                        <input 
-                                            type="number" 
-                                            value={customHeight} 
-                                            onChange={(e) => setCustomHeight(Number(e.target.value))}
-                                            min="10"
-                                            max="300"
-                                        />
-                                    </div>
+                                    <div className="form-group"><label>Width (mm)</label><input type="number" value={customWidth} onChange={(e) => setCustomWidth(Number(e.target.value))} min="10" max="300" /></div>
+                                    <div className="form-group"><label>Height (mm)</label><input type="number" value={customHeight} onChange={(e) => setCustomHeight(Number(e.target.value))} min="10" max="300" /></div>
                                 </div>
                             )}
-
                             <div className="form-group">
                                 <label>Border Options</label>
-                                <div className="checkbox-group">
-                                    <input 
-                                        type="checkbox" 
-                                        id="showBorder"
-                                        checked={showBorder}
-                                        onChange={(e) => setShowBorder(e.target.checked)}
-                                    />
-                                    <label htmlFor="showBorder">Show Border</label>
-                                </div>
-                                
+                                <div className="checkbox-group"><input type="checkbox" id="showBorder" checked={showBorder} onChange={(e) => setShowBorder(e.target.checked)} /><label htmlFor="showBorder">Show Border</label></div>
                                 {showBorder && (
-                                    <>
-                                        <div className="settings-grid" style={{marginTop: '1rem'}}>
-                                            <div>
-                                                <label style={{fontSize: '0.85rem', marginBottom: '0.25rem'}}>
-                                                    Width (px)
-                                                </label>
-                                                <input 
-                                                    type="number" 
-                                                    value={borderWidth} 
-                                                    onChange={(e) => setBorderWidth(Number(e.target.value))}
-                                                    min="1"
-                                                    max="20"
-                                                />
-                                            </div>
-                                            <div>
-                                                <label style={{fontSize: '0.85rem', marginBottom: '0.25rem'}}>
-                                                    Color
-                                                </label>
-                                                <input 
-                                                    type="color" 
-                                                    value={borderColor}
-                                                    onChange={(e) => setBorderColor(e.target.value)}
-                                                    style={{width: '100%', height: '42px'}}
-                                                />
-                                            </div>
-                                        </div>
-                                    </>
+                                    <div className="settings-grid" style={{marginTop: '1rem'}}>
+                                        <div><label style={{fontSize: '0.85rem', marginBottom: '0.25rem'}}>Width (px)</label><input type="number" value={borderWidth} onChange={(e) => setBorderWidth(Number(e.target.value))} min="1" max="20" /></div>
+                                        <div><label style={{fontSize: '0.85rem', marginBottom: '0.25rem'}}>Color</label><input type="color" value={borderColor} onChange={(e) => setBorderColor(e.target.value)} style={{width: '100%', height: '42px'}} /></div>
+                                    </div>
                                 )}
                             </div>
-
-                            <div className="btn-group">
-                                <button 
-                                    className="btn btn-primary"
-                                    onClick={addPhoto}
-                                    disabled={!currentImageId}
-                                    style={{flex: 1}}
-                                >
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                        <line x1="12" y1="5" x2="12" y2="19"></line>
-                                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                                    </svg>
-                                    Add Photo
-                                </button>
-                            </div>
-
+                            <div className="btn-group"><button className="btn btn-primary" onClick={addPhoto} disabled={!currentImageId} style={{flex: 1}}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>Add Photo</button></div>
                             <div className="info-card">
-                                <h4>
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{verticalAlign: 'middle', marginRight: '0.25rem'}}>
-                                        <circle cx="12" cy="12" r="1"></circle>
-                                        <circle cx="12" cy="5" r="1"></circle>
-                                        <circle cx="12" cy="19" r="1"></circle>
-                                    </svg>
-                                    Quick Actions
-                                </h4>
+                                <h4><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{verticalAlign: 'middle', marginRight: '0.25rem'}}><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>Quick Actions</h4>
                                 <div style={{display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '0.5rem'}}>
-                                    <button 
-                                        className="btn btn-secondary"
-                                        onClick={duplicateSelectedPhoto}
-                                        disabled={selectedPhoto === null}
-                                        style={{width: '100%', fontSize: '0.9rem', padding: '0.6rem'}}
-                                    >
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                                        </svg>
-                                        Duplicate
-                                    </button>
+                                    <button className="btn btn-secondary" onClick={duplicateSelectedPhoto} disabled={selectedPhoto === null} style={{width: '100%', fontSize: '0.9rem', padding: '0.6rem'}}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>Duplicate</button>
                                     <div style={{display: 'flex', gap: '0.5rem'}}>
-                                        <button 
-                                            className="btn btn-secondary"
-                                            onClick={rotateLeft}
-                                            disabled={selectedPhoto === null}
-                                            style={{flex: 1, fontSize: '0.9rem', padding: '0.6rem'}}
-                                        >
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                <path d="M2.5 2v6h6M2.66 15.57a10 10 0 1 0 .57-8.38"></path>
-                                            </svg>
-                                        </button>
-                                        <button 
-                                            className="btn btn-secondary"
-                                            onClick={rotateRight}
-                                            disabled={selectedPhoto === null}
-                                            style={{flex: 1, fontSize: '0.9rem', padding: '0.6rem'}}
-                                        >
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38"></path>
-                                            </svg>
-                                        </button>
+                                        <button className="btn btn-secondary" onClick={rotateLeft} disabled={selectedPhoto === null} style={{flex: 1, fontSize: '0.9rem', padding: '0.6rem'}}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2.5 2v6h6M2.66 15.57a10 10 0 1 0 .57-8.38"></path></svg></button>
+                                        <button className="btn btn-secondary" onClick={rotateRight} disabled={selectedPhoto === null} style={{flex: 1, fontSize: '0.9rem', padding: '0.6rem'}}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38"></path></svg></button>
                                     </div>
-                                    <button 
-                                        className="btn btn-secondary"
-                                        onClick={deleteSelectedPhoto}
-                                        disabled={selectedPhoto === null}
-                                        style={{width: '100%', fontSize: '0.9rem', padding: '0.6rem', background: '#dc3545'}}
-                                    >
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                        </svg>
-                                        Delete
-                                    </button>
-                                    <button 
-                                        className="btn btn-secondary"
-                                        onClick={clearAll}
-                                        disabled={photos.length === 0}
-                                        style={{width: '100%', fontSize: '0.9rem', padding: '0.6rem'}}
-                                    >
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-                                        </svg>
-                                        Clear All
-                                    </button>
+                                    <button className="btn btn-secondary" onClick={deleteSelectedPhoto} disabled={selectedPhoto === null} style={{width: '100%', fontSize: '0.9rem', padding: '0.6rem', background: '#dc3545'}}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>Delete</button>
+                                    <button className="btn btn-secondary" onClick={clearAll} disabled={photos.length === 0} style={{width: '100%', fontSize: '0.9rem', padding: '0.6rem'}}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>Clear All</button>
                                 </div>
                             </div>
-
-                            <div className="info-card" style={{borderColor: '#28a745'}}>
-                                <h4>Canvas Info</h4>
-                                <p>
-                                    Photos on canvas: {photos.length}<br/>
-                                    {selectedPhoto && 'Selected: 1 photo'}
-                                </p>
-                            </div>
-
-                            <div className="form-group">
-                                <label>Export Format</label>
-                                <div style={{
-                                    display: 'grid',
-                                    gridTemplateColumns: '1fr 1fr',
-                                    gap: '0.5rem'
-                                }}>
-                                    <button
-                                        onClick={() => setExportFormat('png')}
-                                        style={{
-                                            padding: '0.7rem',
-                                            border: exportFormat === 'png' ? '2px solid var(--primary)' : '1px solid var(--border)',
-                                            borderRadius: '6px',
-                                            background: exportFormat === 'png' ? 'var(--primary)' : 'black',
-                                            color: exportFormat === 'png' ? 'black' : 'var(--text)',
-                                            cursor: 'pointer',
-                                            fontFamily: 'Outfit, sans-serif',
-                                            fontWeight: exportFormat === 'png' ? '500' : '400',
-                                            transition: 'all 0.2s',
-                                            fontSize: '0.9rem'
-                                        }}
-                                    >
-                                        PNG
-                                    </button>
-                                    <button
-                                        onClick={() => setExportFormat('jpg')}
-                                        style={{
-                                            padding: '0.7rem',
-                                            border: exportFormat === 'jpg' ? '2px solid var(--primary)' : '1px solid var(--border)',
-                                            borderRadius: '6px',
-                                            background: exportFormat === 'jpg' ? 'var(--primary)' : 'black',
-                                            color: exportFormat === 'jpg' ? 'black' : 'var(--text)',
-                                            cursor: 'pointer',
-                                            fontFamily: 'Outfit, sans-serif',
-                                            fontWeight: exportFormat === 'jpg' ? '500' : '400',
-                                            transition: 'all 0.2s',
-                                            fontSize: '0.9rem'
-                                        }}
-                                    >
-                                        JPG
-                                    </button>
+                            <div className="info-card" style={{borderColor: '#28a745'}}><h4>Canvas Info</h4><p>Photos on canvas: {photos.length}<br/>{selectedPhoto && 'Selected: 1 photo'}</p></div>
+                            <div className="form-group"><label>Export Format</label>
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
+                                    <button onClick={() => setExportFormat('png')} style={{ padding: '0.7rem', border: exportFormat === 'png' ? '2px solid var(--primary)' : '1px solid var(--border)', borderRadius: '6px', background: exportFormat === 'png' ? 'var(--primary)' : 'black', color: exportFormat === 'png' ? 'black' : 'var(--text)', cursor: 'pointer', fontFamily: 'Outfit, sans-serif', fontWeight: exportFormat === 'png' ? '500' : '400', transition: 'all 0.2s', fontSize: '0.9rem' }}>PNG</button>
+                                    <button onClick={() => setExportFormat('jpg')} style={{ padding: '0.7rem', border: exportFormat === 'jpg' ? '2px solid var(--primary)' : '1px solid var(--border)', borderRadius: '6px', background: exportFormat === 'jpg' ? 'var(--primary)' : 'black', color: exportFormat === 'jpg' ? 'black' : 'var(--text)', cursor: 'pointer', fontFamily: 'Outfit, sans-serif', fontWeight: exportFormat === 'jpg' ? '500' : '400', transition: 'all 0.2s', fontSize: '0.9rem' }}>JPG</button>
                                 </div>
                             </div>
-
                             <div className="btn-group">
-                                <button 
-                                    className="btn btn-primary"
-                                    onClick={downloadAsPDF}
-                                    disabled={photos.length === 0}
-                                >
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                        <polyline points="14 2 14 8 20 8"></polyline>
-                                        <line x1="16" y1="13" x2="8" y2="13"></line>
-                                        <line x1="16" y1="17" x2="8" y2="17"></line>
-                                        <polyline points="10 9 9 9 8 9"></polyline>
-                                    </svg>
-                                    PDF
-                                </button>
-                                <button 
-                                    className="btn btn-secondary"
-                                    onClick={downloadAsImage}
-                                    disabled={photos.length === 0}
-                                >
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                                        <polyline points="21 15 16 10 5 21"></polyline>
-                                    </svg>
-                                    {exportFormat.toUpperCase()}
-                                </button>
+                                <button className="btn btn-primary" onClick={downloadAsPDF} disabled={photos.length === 0}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>PDF</button>
+                                <button className="btn btn-secondary" onClick={downloadAsImage} disabled={photos.length === 0}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>{exportFormat.toUpperCase()}</button>
                             </div>
                         </div>
-
                         <div className="panel">
                             <h2>Workspace</h2>
                             <div className="preview-container">
                                 <div className="canvas-wrapper">
-                                    <canvas 
-                                        ref={canvasRef}
-                                        className="paper-canvas interactive-canvas"
-                                        style={{
-                                            maxWidth: '100%',
-                                            height: 'auto',
-                                            border: '1px solid #ddd',
-                                            cursor: dragging ? 'grabbing' : resizing ? 'nwse-resize' : 'default'
-                                        }}
-                                        onMouseDown={handleMouseDown}
-                                        onMouseMove={handleMouseMove}
-                                        onMouseUp={handleMouseUp}
-                                        onMouseLeave={handleMouseUp}
-                                    />
+                                    <canvas ref={canvasRef} className="paper-canvas interactive-canvas" style={{ maxWidth: '100%', height: 'auto', border: '1px solid #ddd', cursor: dragging ? 'grabbing' : resizing ? 'nwse-resize' : 'default' }} onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp} onMouseLeave={handleMouseUp} />
                                 </div>
                             </div>
                         </div>
@@ -1380,7 +1013,6 @@
                 </div>
             );
         }
-
         ReactDOM.render(<PhotoLayoutApp />, document.getElementById('root'));
     </script>
 </body>
