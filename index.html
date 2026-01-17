@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Layout Studio</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+    --primary: #ffffff;          /* main buttons & highlights */
+    --secondary: #111111;        /* secondary buttons */
+    --accent: #ffffff;           /* accent lines & film strip */
+    --border: #ffffff;           /* borders */
+    --bg: #000000;               /* page background */
+    --card: #0d0d0d;             /* panels / cards */
+    --text: #ffffff;             /* main text */
+    --text-muted: #b3b3b3;       /* muted text */
+    --shadow: rgba(255, 255, 255, 0.08);
+}
+
+
+        body {
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
+            color: var(--text);
+            padding: 0;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            text-align: center;
+            padding: 3rem 2rem 2rem;
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 3px;
+            background: var(--accent);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .header p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-weight: 300;
+            letter-spacing: 0.3px;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            height: calc(100vh - 180px);
+            background: var(--card);
+        }
+
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+        }
+
+        .panel {
+            background: var(--card);
+            padding: 0;
+            overflow-y: auto;
+        }
+
+        .panel:first-child {
+            border-right: 1px solid var(--border);
+            padding: 2rem 1.5rem;
+        }
+
+        .panel h2 {
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.75rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.6rem;
+            font-weight: 400;
+            color: var(--text);
+            font-size: 0.875rem;
+            letter-spacing: 0.2px;
+        }
+
+        .upload-area {
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--bg);
+        }
+
+        .upload-area:hover {
+            border-color: var(--accent);
+            background: rgba(231, 76, 60, 0.02);
+        }
+
+        .upload-area.drag-over {
+            border-color: var(--accent);
+            background: rgba(231, 76, 60, 0.05);
+            border-style: solid;
+        }
+
+        .upload-icon {
+            margin-bottom: 1rem;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        select, input[type="number"] {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            background: rgb(3, 3, 3);
+            color: var(--text);
+        }
+
+        select:focus, input[type="number"]:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: rgb(0, 0, 0);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: #ffffff;
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+
+        .preview-container {
+            min-height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            background: #fafafa;
+            position: relative;
+        }
+
+        .preview-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(var(--border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .canvas-wrapper {
+            background: white;
+            box-shadow: 0 10px 40px var(--shadow), 0 0 0 1px var(--border);
+            display: inline-block;
+            position: relative;
+            z-index: 1;
+        }
+
+        .paper-canvas {
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.2;
+        }
+
+        .empty-state h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+            font-weight: 400;
+        }
+
+        .empty-state p {
+            font-size: 0.9rem;
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+
+        @media (max-width: 768px) {
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .info-card {
+            background: var(--bg);
+            border-radius: 6px;
+            padding: 1.25rem;
+            margin-top: 1.5rem;
+            border-left: 3px solid var(--accent);
+        }
+
+        .info-card h4 {
+            font-size: 0.8rem;
+            margin-bottom: 0.75rem;
+            color: var(--text);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .info-card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .image-preview {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .image-preview img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        .image-info {
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-family: 'Space Mono', monospace;
+        }
+
+        .interactive-canvas {
+            cursor: move;
+            position: relative;
+        }
+
+        .interactive-canvas.dragging {
+            cursor: grabbing;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        /* Film strip decoration */
+        .film-strip {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: repeating-linear-gradient(
+                90deg,
+                var(--primary) 0px,
+                var(--primary) 15px,
+                var(--accent) 15px,
+                var(--accent) 18px,
+                var(--primary) 18px,
+                var(--primary) 33px,
+                transparent 33px,
+                transparent 38px
+            );
+            z-index: 1000;
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+    <div class="film-strip"></div>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useRef, useEffect } = React;
+
+        // Photo size definitions in mm
+        const PHOTO_SIZES = {
+            '4R': { width: 102, height: 152, label: '4R (4×6")' },
+            '5R': { width: 127, height: 178, label: '5R (5×7")' },
+            '6R': { width: 152, height: 203, label: '6R (6×8")' },
+            '8R': { width: 203, height: 254, label: '8R (8×10")' },
+            '2x2': { width: 51, height: 51, label: '2×2" (Passport)' },
+            '1x1': { width: 25, height: 25, label: '1×1" (ID)' },
+            'wallet': { width: 54, height: 85, label: 'Wallet Size' },
+            'keychain-rect': { width: 28, height: 47, label: 'Keychain Rectangle (2.8×4.7cm)' },
+            'keychain-curved': { width: 32, height: 46, label: 'Keychain Curved (3.2×4.6cm)' },
+            'keychain-clothes': { width: 28, height: 37, label: 'Keychain Clothes (2.8×3.7cm)' },
+            'keychain-heart': { width: 43, height: 39, label: 'Keychain Heart (4.3×3.9cm)' },
+            'keychain-octagon': { width: 30, height: 47, label: 'Keychain Octagon (3×4.7cm)' },
+            'keychain-round': { width: 36, height: 36, label: 'Keychain Round (3.6×3.6cm)' },
+            'keychain-square': { width: 33, height: 33, label: 'Keychain Square (3.3×3.3cm)' },
+            'tcg-standard': { width: 63, height: 88, label: 'TCG Standard (63×88mm)' },
+            'tcg-mini': { width: 44, height: 63, label: 'TCG Mini (44×63mm)' },
+            'tcg-jumbo': { width: 89, height: 127, label: 'TCG Jumbo (89×127mm)' },
+            'pokemon': { width: 63, height: 88, label: 'Pokémon Card (63×88mm)' },
+            'yugioh': { width: 59, height: 86, label: 'Yu-Gi-Oh! Card (59×86mm)' },
+            'custom': { width: 100, height: 100, label: 'Custom Size' },
+        };
+
+        // Paper size definitions in mm
+        const PAPER_SIZES = {
+            'A4': { width: 210, height: 297, label: 'A4 (210×297mm)' },
+            'short': { width: 215.9, height: 279.4, label: 'Short Bond (8.5×11")' },
+            'long': { width: 215.9, height: 330.2, label: 'Long Bond (8.5×13")' },
+            'letter': { width: 215.9, height: 279.4, label: 'Letter (8.5×11")' },
+            'legal': { width: 215.9, height: 355.6, label: 'Legal (8.5×14")' },
+        };
+
+        function PhotoLayoutApp() {
+            const [images, setImages] = useState({}); // Store multiple images by ID
+            const [currentImageId, setCurrentImageId] = useState(null);
+            const [photoSize, setPhotoSize] = useState('6R');
+            const [customWidth, setCustomWidth] = useState(100);
+            const [customHeight, setCustomHeight] = useState(100);
+            const [paperSize, setPaperSize] = useState('A4');
+            const [showBorder, setShowBorder] = useState(true);
+            const [borderWidth, setBorderWidth] = useState(2);
+            const [borderColor, setBorderColor] = useState('#000000');
+            const [photos, setPhotos] = useState([]);
+            const [selectedPhoto, setSelectedPhoto] = useState(null);
+            const [dragging, setDragging] = useState(false);
+            const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+            const [resizing, setResizing] = useState(null);
+            const [exportFormat, setExportFormat] = useState('png'); // 'png' or 'jpg'
+            const canvasRef = useRef(null);
+            const fileInputRef = useRef(null);
+
+            const handleFileChange = (e) => {
+                const file = e.target.files[0];
+                if (file && file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        const img = new Image();
+                        img.onload = () => {
+                            const imageId = Date.now();
+                            setImages(prev => ({
+                                ...prev,
+                                [imageId]: {
+                                    id: imageId,
+                                    data: event.target.result,
+                                    img: img,
+                                    name: file.name
+                                }
+                            }));
+                            setCurrentImageId(imageId);
+                        };
+                        img.src = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+
+            const handleDrop = (e) => {
+                e.preventDefault();
+                const file = e.dataTransfer.files[0];
+                if (file && file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        const img = new Image();
+                        img.onload = () => {
+                            const imageId = Date.now();
+                            setImages(prev => ({
+                                ...prev,
+                                [imageId]: {
+                                    id: imageId,
+                                    data: event.target.result,
+                                    img: img,
+                                    name: file.name
+                                }
+                            }));
+                            setCurrentImageId(imageId);
+                        };
+                        img.src = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+
+            const handleDragOver = (e) => {
+                e.preventDefault();
+                e.currentTarget.classList.add('drag-over');
+            };
+
+            const handleDragLeave = (e) => {
+                e.currentTarget.classList.remove('drag-over');
+            };
+
+            useEffect(() => {
+                drawLayout();
+            }, [photos, paperSize, showBorder, borderWidth, borderColor, selectedPhoto, images]);
+
+            useEffect(() => {
+                const handleKeyDown = (e) => {
+                    // Delete/Backspace - delete selected photo
+                    if ((e.key === 'Delete' || e.key === 'Backspace') && selectedPhoto !== null) {
+                        e.preventDefault();
+                        deleteSelectedPhoto();
+                    }
+                    
+                    // Ctrl+C or Cmd+C - copy
+                    if ((e.ctrlKey || e.metaKey) && e.key === 'c' && selectedPhoto !== null) {
+                        e.preventDefault();
+                        const photoToCopy = photos.find(p => p.id === selectedPhoto);
+                        if (photoToCopy) {
+                            sessionStorage.setItem('copiedPhoto', JSON.stringify(photoToCopy));
+                        }
+                    }
+                    
+                    // Ctrl+V or Cmd+V - paste
+                    if ((e.ctrlKey || e.metaKey) && e.key === 'v') {
+                        e.preventDefault();
+                        const copiedPhoto = sessionStorage.getItem('copiedPhoto');
+                        if (copiedPhoto) {
+                            const photo = JSON.parse(copiedPhoto);
+                            const newPhoto = {
+                                ...photo,
+                                id: Date.now(),
+                                x: photo.x + 20,
+                                y: photo.y + 20
+                            };
+                            setPhotos([...photos, newPhoto]);
+                            setSelectedPhoto(newPhoto.id);
+                        }
+                    }
+                    
+                    // Ctrl+D or Cmd+D - duplicate
+                    if ((e.ctrlKey || e.metaKey) && e.key === 'd' && selectedPhoto !== null) {
+                        e.preventDefault();
+                        duplicateSelectedPhoto();
+                    }
+                    
+                    // Ctrl+A or Cmd+A - select all (prevent default browser behavior)
+                    if ((e.ctrlKey || e.metaKey) && e.key === 'a') {
+                        e.preventDefault();
+                    }
+                    
+                    // R - rotate right
+                    if (e.key === 'r' && selectedPhoto !== null && !e.ctrlKey && !e.metaKey) {
+                        e.preventDefault();
+                        rotateRight();
+                    }
+                    
+                    // L - rotate left
+                    if (e.key === 'l' && selectedPhoto !== null && !e.ctrlKey && !e.metaKey) {
+                        e.preventDefault();
+                        rotateLeft();
+                    }
+                    
+                    // Arrow keys - move selected photo
+                    if (selectedPhoto !== null && ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+                        e.preventDefault();
+                        const moveAmount = e.shiftKey ? 10 : 1;
+                        
+                        setPhotos(photos.map(p => {
+                            if (p.id === selectedPhoto) {
+                                let newX = p.x;
+                                let newY = p.y;
+                                
+                                if (e.key === 'ArrowLeft') newX -= moveAmount;
+                                if (e.key === 'ArrowRight') newX += moveAmount;
+                                if (e.key === 'ArrowUp') newY -= moveAmount;
+                                if (e.key === 'ArrowDown') newY += moveAmount;
+                                
+                                return { ...p, x: newX, y: newY };
+                            }
+                            return p;
+                        }));
+                    }
+                    
+                    // Escape - deselect
+                    if (e.key === 'Escape') {
+                        setSelectedPhoto(null);
+                    }
+                    
+                    // Enter - add photo
+                    if (e.key === 'Enter' && currentImageId && !e.ctrlKey && !e.metaKey) {
+                        e.preventDefault();
+                        addPhoto();
+                    }
+                };
+
+                window.addEventListener('keydown', handleKeyDown);
+                return () => window.removeEventListener('keydown', handleKeyDown);
+            }, [photos, selectedPhoto, currentImageId]);
+
+            const addPhoto = () => {
+                if (!currentImageId || !images[currentImageId]) return;
+
+                const canvas = canvasRef.current;
+                const paper = PAPER_SIZES[paperSize];
+                const photoSizeData = photoSize === 'custom' 
+                    ? { width: customWidth, height: customHeight }
+                    : PHOTO_SIZES[photoSize];
+                const dpi = 300;
+                const scale = dpi / 25.4;
+
+                const photoWidthPx = photoSizeData.width * scale;
+                const photoHeightPx = photoSizeData.height * scale;
+
+                const newPhoto = {
+                    id: Date.now(),
+                    x: 50,
+                    y: 50,
+                    width: photoWidthPx,
+                    height: photoHeightPx,
+                    photoSize: photoSize,
+                    rotation: 0,
+                    imageId: currentImageId // Store which image this photo uses
+                };
+
+                setPhotos([...photos, newPhoto]);
+                setSelectedPhoto(newPhoto.id);
+            };
+
+            const deleteSelectedPhoto = () => {
+                if (selectedPhoto !== null) {
+                    setPhotos(photos.filter(p => p.id !== selectedPhoto));
+                    setSelectedPhoto(null);
+                }
+            };
+
+            const duplicateSelectedPhoto = () => {
+                if (selectedPhoto !== null) {
+                    const photoToDuplicate = photos.find(p => p.id === selectedPhoto);
+                    if (photoToDuplicate) {
+                        const newPhoto = {
+                            ...photoToDuplicate,
+                            id: Date.now(),
+                            x: photoToDuplicate.x + 20,
+                            y: photoToDuplicate.y + 20
+                        };
+                        setPhotos([...photos, newPhoto]);
+                        setSelectedPhoto(newPhoto.id);
+                    }
+                }
+            };
+
+            const clearAll = () => {
+                setPhotos([]);
+                setSelectedPhoto(null);
+            };
+
+            const rotateSelectedPhoto = () => {
+                if (selectedPhoto !== null) {
+                    setPhotos(photos.map(p => 
+                        p.id === selectedPhoto 
+                            ? { ...p, rotation: (p.rotation + 90) % 360 }
+                            : p
+                    ));
+                }
+            };
+
+            const rotateLeft = () => {
+                if (selectedPhoto !== null) {
+                    setPhotos(photos.map(p => 
+                        p.id === selectedPhoto 
+                            ? { ...p, rotation: (p.rotation - 90 + 360) % 360 }
+                            : p
+                    ));
+                }
+            };
+
+            const rotateRight = () => {
+                if (selectedPhoto !== null) {
+                    setPhotos(photos.map(p => 
+                        p.id === selectedPhoto 
+                            ? { ...p, rotation: (p.rotation + 90) % 360 }
+                            : p
+                    ));
+                }
+            };
+
+            const drawLayout = () => {
+                const canvas = canvasRef.current;
+                if (!canvas) return;
+
+                const ctx = canvas.getContext('2d');
+                const paper = PAPER_SIZES[paperSize];
+                const dpi = 300;
+                const scale = dpi / 25.4;
+                
+                canvas.width = paper.width * scale;
+                canvas.height = paper.height * scale;
+
+                // Fill with white background
+                ctx.fillStyle = 'white';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Draw each photo
+                photos.forEach(photo => {
+                    const imageData = images[photo.imageId];
+                    if (!imageData || !imageData.img) return;
+                    
+                    const image = imageData.img;
+
+                    ctx.save();
+
+                    // Translate to photo position
+                    ctx.translate(photo.x + photo.width / 2, photo.y + photo.height / 2);
+                    ctx.rotate((photo.rotation * Math.PI) / 180);
+                    ctx.translate(-photo.width / 2, -photo.height / 2);
+
+                    // Calculate aspect ratios
+                    const photoAspect = photo.width / photo.height;
+                    const imageAspect = image.width / image.height;
+
+                    let sx, sy, sWidth, sHeight;
+
+                    if (imageAspect > photoAspect) {
+                        sHeight = image.height;
+                        sWidth = image.height * photoAspect;
+                        sx = (image.width - sWidth) / 2;
+                        sy = 0;
+                    } else {
+                        sWidth = image.width;
+                        sHeight = image.width / photoAspect;
+                        sx = 0;
+                        sy = (image.height - sHeight) / 2;
+                    }
+
+                    // Draw image
+                    ctx.drawImage(
+                        image,
+                        sx, sy, sWidth, sHeight,
+                        0, 0, photo.width, photo.height
+                    );
+
+                    // Draw border
+                    if (showBorder) {
+                        ctx.strokeStyle = borderColor;
+                        ctx.lineWidth = borderWidth;
+                        ctx.strokeRect(0, 0, photo.width, photo.height);
+                    }
+
+                    // Draw selection outline
+                    if (photo.id === selectedPhoto) {
+                        ctx.strokeStyle = '#00d9ff';
+                        ctx.lineWidth = 3;
+                        ctx.setLineDash([5, 5]);
+                        ctx.strokeRect(-5, -5, photo.width + 10, photo.height + 10);
+                        ctx.setLineDash([]);
+
+                        // Draw resize handles
+                        const handleSize = 10;
+                        ctx.fillStyle = '#00d9ff';
+                        
+                        // Corner handles
+                        ctx.fillRect(-handleSize/2, -handleSize/2, handleSize, handleSize);
+                        ctx.fillRect(photo.width - handleSize/2, -handleSize/2, handleSize, handleSize);
+                        ctx.fillRect(-handleSize/2, photo.height - handleSize/2, handleSize, handleSize);
+                        ctx.fillRect(photo.width - handleSize/2, photo.height - handleSize/2, handleSize, handleSize);
+                    }
+
+                    ctx.restore();
+                });
+            };
+
+            const getPhotoAtPosition = (x, y) => {
+                const canvas = canvasRef.current;
+                if (!canvas) return null;
+
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+
+                const canvasX = (x - rect.left) * scaleX;
+                const canvasY = (y - rect.top) * scaleY;
+
+                // Check photos in reverse order (top to bottom)
+                for (let i = photos.length - 1; i >= 0; i--) {
+                    const photo = photos[i];
+                    
+                    if (canvasX >= photo.x && canvasX <= photo.x + photo.width &&
+                        canvasY >= photo.y && canvasY <= photo.y + photo.height) {
+                        return photo;
+                    }
+                }
+
+                return null;
+            };
+
+            const getResizeHandle = (photo, x, y) => {
+                if (!photo) return null;
+
+                const canvas = canvasRef.current;
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+
+                const canvasX = (x - rect.left) * scaleX;
+                const canvasY = (y - rect.top) * scaleY;
+
+                const handleSize = 10;
+                const threshold = 15;
+
+                // Check corner handles
+                const corners = [
+                    { name: 'nw', x: photo.x, y: photo.y },
+                    { name: 'ne', x: photo.x + photo.width, y: photo.y },
+                    { name: 'sw', x: photo.x, y: photo.y + photo.height },
+                    { name: 'se', x: photo.x + photo.width, y: photo.y + photo.height }
+                ];
+
+                for (const corner of corners) {
+                    if (Math.abs(canvasX - corner.x) < threshold && 
+                        Math.abs(canvasY - corner.y) < threshold) {
+                        return corner.name;
+                    }
+                }
+
+                return null;
+            };
+
+            const handleMouseDown = (e) => {
+                const photo = getPhotoAtPosition(e.clientX, e.clientY);
+                
+                if (photo) {
+                    setSelectedPhoto(photo.id);
+                    
+                    const handle = getResizeHandle(photo, e.clientX, e.clientY);
+                    
+                    if (handle) {
+                        setResizing({ photoId: photo.id, handle });
+                    } else {
+                        setDragging(true);
+                        const canvas = canvasRef.current;
+                        const rect = canvas.getBoundingClientRect();
+                        const scaleX = canvas.width / rect.width;
+                        const scaleY = canvas.height / rect.height;
+                        
+                        const canvasX = (e.clientX - rect.left) * scaleX;
+                        const canvasY = (e.clientY - rect.top) * scaleY;
+                        
+                        setDragOffset({
+                            x: canvasX - photo.x,
+                            y: canvasY - photo.y
+                        });
+                    }
+                } else {
+                    setSelectedPhoto(null);
+                }
+            };
+
+            const handleMouseMove = (e) => {
+                const canvas = canvasRef.current;
+                if (!canvas) return;
+
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+
+                const canvasX = (e.clientX - rect.left) * scaleX;
+                const canvasY = (e.clientY - rect.top) * scaleY;
+
+                if (dragging && selectedPhoto !== null) {
+                    setPhotos(photos.map(p => 
+                        p.id === selectedPhoto 
+                            ? { ...p, x: canvasX - dragOffset.x, y: canvasY - dragOffset.y }
+                            : p
+                    ));
+                } else if (resizing) {
+                    const photo = photos.find(p => p.id === resizing.photoId);
+                    if (!photo) return;
+
+                    const photoSize = PHOTO_SIZES[photo.photoSize];
+                    const aspectRatio = photoSize.width / photoSize.height;
+
+                    let newWidth = photo.width;
+                    let newHeight = photo.height;
+                    let newX = photo.x;
+                    let newY = photo.y;
+
+                    switch (resizing.handle) {
+                        case 'se':
+                            newWidth = canvasX - photo.x;
+                            newHeight = newWidth / aspectRatio;
+                            break;
+                        case 'sw':
+                            newWidth = photo.x + photo.width - canvasX;
+                            newHeight = newWidth / aspectRatio;
+                            newX = canvasX;
+                            break;
+                        case 'ne':
+                            newWidth = canvasX - photo.x;
+                            newHeight = newWidth / aspectRatio;
+                            newY = photo.y + photo.height - newHeight;
+                            break;
+                        case 'nw':
+                            newWidth = photo.x + photo.width - canvasX;
+                            newHeight = newWidth / aspectRatio;
+                            newX = canvasX;
+                            newY = photo.y + photo.height - newHeight;
+                            break;
+                    }
+
+                    if (newWidth > 50 && newHeight > 50) {
+                        setPhotos(photos.map(p => 
+                            p.id === resizing.photoId 
+                                ? { ...p, width: newWidth, height: newHeight, x: newX, y: newY }
+                                : p
+                        ));
+                    }
+                }
+            };
+
+            const handleMouseUp = () => {
+                setDragging(false);
+                setResizing(null);
+            };
+
+            const downloadAsPDF = async () => {
+                const canvas = canvasRef.current;
+                if (!canvas) return;
+
+                const { jsPDF } = window.jspdf;
+                const paper = PAPER_SIZES[paperSize];
+
+                const orientation = paper.width > paper.height ? 'landscape' : 'portrait';
+                const pdf = new jsPDF({
+                    orientation: orientation,
+                    unit: 'mm',
+                    format: [paper.width, paper.height]
+                });
+
+                const imgData = canvas.toDataURL('image/jpeg', 1.0);
+                pdf.addImage(imgData, 'JPEG', 0, 0, paper.width, paper.height);
+                
+                pdf.save(`photo-layout-${paperSize}.pdf`);
+            };
+
+            const downloadAsImage = () => {
+                const canvas = canvasRef.current;
+                if (!canvas) return;
+
+                const mimeType = exportFormat === 'jpg' ? 'image/jpeg' : 'image/png';
+                const extension = exportFormat === 'jpg' ? 'jpg' : 'png';
+                const quality = exportFormat === 'jpg' ? 0.95 : undefined;
+
+                canvas.toBlob((blob) => {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `photo-layout-${paperSize}.${extension}`;
+                    a.click();
+                    URL.revokeObjectURL(url);
+                }, mimeType, quality);
+            };
+
+            return (
+                <div className="container">
+                    <div className="header">
+                        <h1>
+                            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                                <circle cx="12" cy="13" r="4"></circle>
+                            </svg>
+                            Photo Layout Studio
+                        </h1>
+                        <p>Professional photo arrangement tool</p>
+                    </div>
+
+                    <div className="main-grid">
+                        <div className="panel">
+                            <h2>Controls</h2>
+                            
+                            <div className="form-group">
+                                <label>Upload Image</label>
+                                <div 
+                                    className="upload-area"
+                                    onClick={() => fileInputRef.current?.click()}
+                                    onDrop={handleDrop}
+                                    onDragOver={handleDragOver}
+                                    onDragLeave={handleDragLeave}
+                                >
+                                    <div className="upload-icon">
+                                        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{opacity: 0.6}}>
+                                            <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                                            <polyline points="13 2 13 9 20 9"></polyline>
+                                        </svg>
+                                    </div>
+                                    <p><strong>Click to upload</strong> or drag and drop</p>
+                                    <p style={{fontSize: '0.85rem', marginTop: '0.5rem', opacity: 0.7}}>
+                                        PNG, JPG, JPEG
+                                    </p>
+                                </div>
+                                <input 
+                                    ref={fileInputRef}
+                                    type="file" 
+                                    accept="image/*" 
+                                    onChange={handleFileChange}
+                                />
+                            </div>
+
+                            {Object.keys(images).length > 0 && (
+                                <div className="form-group">
+                                    <label>Library ({Object.keys(images).length})</label>
+                                    <div style={{
+                                        display: 'grid',
+                                        gridTemplateColumns: 'repeat(3, 1fr)',
+                                        gap: '0.5rem',
+                                        marginTop: '0.5rem'
+                                    }}>
+                                        {Object.values(images).map(img => (
+                                            <div
+                                                key={img.id}
+                                                onClick={() => setCurrentImageId(img.id)}
+                                                style={{
+                                                    position: 'relative',
+                                                    cursor: 'pointer',
+                                                    border: currentImageId === img.id ? '2px solid var(--primary)' : '1px solid var(--border)',
+                                                    borderRadius: '4px',
+                                                    overflow: 'hidden',
+                                                    aspectRatio: '1',
+                                                    transition: 'all 0.2s'
+                                                }}
+                                            >
+                                                <img 
+                                                    src={img.data} 
+                                                    alt={img.name}
+                                                    style={{
+                                                        width: '100%',
+                                                        height: '100%',
+                                                        objectFit: 'cover'
+                                                    }}
+                                                />
+                                                {currentImageId === img.id && (
+                                                    <div style={{
+                                                        position: 'absolute',
+                                                        top: '4px',
+                                                        right: '4px',
+                                                        background: 'var(--primary)',
+                                                        color: 'white',
+                                                        borderRadius: '50%',
+                                                        width: '18px',
+                                                        height: '18px',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center',
+                                                        fontSize: '10px',
+                                                        fontWeight: 'bold'
+                                                    }}>
+                                                        ✓
+                                                    </div>
+                                                )}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            <div className="settings-grid">
+                                <div className="form-group">
+                                    <label>Photo Size</label>
+                                    <select value={photoSize} onChange={(e) => setPhotoSize(e.target.value)}>
+                                        {Object.entries(PHOTO_SIZES).map(([key, value]) => (
+                                            <option key={key} value={key}>{value.label}</option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                <div className="form-group">
+                                    <label>Paper Size</label>
+                                    <select value={paperSize} onChange={(e) => setPaperSize(e.target.value)}>
+                                        {Object.entries(PAPER_SIZES).map(([key, value]) => (
+                                            <option key={key} value={key}>{value.label}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+
+                            {photoSize === 'custom' && (
+                                <div className="settings-grid" style={{marginTop: '1rem'}}>
+                                    <div className="form-group">
+                                        <label>Width (mm)</label>
+                                        <input 
+                                            type="number" 
+                                            value={customWidth} 
+                                            onChange={(e) => setCustomWidth(Number(e.target.value))}
+                                            min="10"
+                                            max="300"
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Height (mm)</label>
+                                        <input 
+                                            type="number" 
+                                            value={customHeight} 
+                                            onChange={(e) => setCustomHeight(Number(e.target.value))}
+                                            min="10"
+                                            max="300"
+                                        />
+                                    </div>
+                                </div>
+                            )}
+
+                            <div className="form-group">
+                                <label>Border Options</label>
+                                <div className="checkbox-group">
+                                    <input 
+                                        type="checkbox" 
+                                        id="showBorder"
+                                        checked={showBorder}
+                                        onChange={(e) => setShowBorder(e.target.checked)}
+                                    />
+                                    <label htmlFor="showBorder">Show Border</label>
+                                </div>
+                                
+                                {showBorder && (
+                                    <>
+                                        <div className="settings-grid" style={{marginTop: '1rem'}}>
+                                            <div>
+                                                <label style={{fontSize: '0.85rem', marginBottom: '0.25rem'}}>
+                                                    Width (px)
+                                                </label>
+                                                <input 
+                                                    type="number" 
+                                                    value={borderWidth} 
+                                                    onChange={(e) => setBorderWidth(Number(e.target.value))}
+                                                    min="1"
+                                                    max="20"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label style={{fontSize: '0.85rem', marginBottom: '0.25rem'}}>
+                                                    Color
+                                                </label>
+                                                <input 
+                                                    type="color" 
+                                                    value={borderColor}
+                                                    onChange={(e) => setBorderColor(e.target.value)}
+                                                    style={{width: '100%', height: '42px'}}
+                                                />
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+
+                            <div className="btn-group">
+                                <button 
+                                    className="btn btn-primary"
+                                    onClick={addPhoto}
+                                    disabled={!currentImageId}
+                                    style={{flex: 1}}
+                                >
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    </svg>
+                                    Add Photo
+                                </button>
+                            </div>
+
+                            <div className="info-card">
+                                <h4>
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{verticalAlign: 'middle', marginRight: '0.25rem'}}>
+                                        <circle cx="12" cy="12" r="1"></circle>
+                                        <circle cx="12" cy="5" r="1"></circle>
+                                        <circle cx="12" cy="19" r="1"></circle>
+                                    </svg>
+                                    Quick Actions
+                                </h4>
+                                <div style={{display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '0.5rem'}}>
+                                    <button 
+                                        className="btn btn-secondary"
+                                        onClick={duplicateSelectedPhoto}
+                                        disabled={selectedPhoto === null}
+                                        style={{width: '100%', fontSize: '0.9rem', padding: '0.6rem'}}
+                                    >
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                        </svg>
+                                        Duplicate
+                                    </button>
+                                    <div style={{display: 'flex', gap: '0.5rem'}}>
+                                        <button 
+                                            className="btn btn-secondary"
+                                            onClick={rotateLeft}
+                                            disabled={selectedPhoto === null}
+                                            style={{flex: 1, fontSize: '0.9rem', padding: '0.6rem'}}
+                                        >
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                <path d="M2.5 2v6h6M2.66 15.57a10 10 0 1 0 .57-8.38"></path>
+                                            </svg>
+                                        </button>
+                                        <button 
+                                            className="btn btn-secondary"
+                                            onClick={rotateRight}
+                                            disabled={selectedPhoto === null}
+                                            style={{flex: 1, fontSize: '0.9rem', padding: '0.6rem'}}
+                                        >
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <button 
+                                        className="btn btn-secondary"
+                                        onClick={deleteSelectedPhoto}
+                                        disabled={selectedPhoto === null}
+                                        style={{width: '100%', fontSize: '0.9rem', padding: '0.6rem', background: '#dc3545'}}
+                                    >
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                        </svg>
+                                        Delete
+                                    </button>
+                                    <button 
+                                        className="btn btn-secondary"
+                                        onClick={clearAll}
+                                        disabled={photos.length === 0}
+                                        style={{width: '100%', fontSize: '0.9rem', padding: '0.6rem'}}
+                                    >
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                                        </svg>
+                                        Clear All
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="info-card" style={{borderColor: '#28a745'}}>
+                                <h4>Canvas Info</h4>
+                                <p>
+                                    Photos on canvas: {photos.length}<br/>
+                                    {selectedPhoto && 'Selected: 1 photo'}
+                                </p>
+                            </div>
+
+                            <div className="form-group">
+                                <label>Export Format</label>
+                                <div style={{
+                                    display: 'grid',
+                                    gridTemplateColumns: '1fr 1fr',
+                                    gap: '0.5rem'
+                                }}>
+                                    <button
+                                        onClick={() => setExportFormat('png')}
+                                        style={{
+                                            padding: '0.7rem',
+                                            border: exportFormat === 'png' ? '2px solid var(--primary)' : '1px solid var(--border)',
+                                            borderRadius: '6px',
+                                            background: exportFormat === 'png' ? 'var(--primary)' : 'black',
+                                            color: exportFormat === 'png' ? 'black' : 'var(--text)',
+                                            cursor: 'pointer',
+                                            fontFamily: 'Outfit, sans-serif',
+                                            fontWeight: exportFormat === 'png' ? '500' : '400',
+                                            transition: 'all 0.2s',
+                                            fontSize: '0.9rem'
+                                        }}
+                                    >
+                                        PNG
+                                    </button>
+                                    <button
+                                        onClick={() => setExportFormat('jpg')}
+                                        style={{
+                                            padding: '0.7rem',
+                                            border: exportFormat === 'jpg' ? '2px solid var(--primary)' : '1px solid var(--border)',
+                                            borderRadius: '6px',
+                                            background: exportFormat === 'jpg' ? 'var(--primary)' : 'black',
+                                            color: exportFormat === 'jpg' ? 'black' : 'var(--text)',
+                                            cursor: 'pointer',
+                                            fontFamily: 'Outfit, sans-serif',
+                                            fontWeight: exportFormat === 'jpg' ? '500' : '400',
+                                            transition: 'all 0.2s',
+                                            fontSize: '0.9rem'
+                                        }}
+                                    >
+                                        JPG
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="btn-group">
+                                <button 
+                                    className="btn btn-primary"
+                                    onClick={downloadAsPDF}
+                                    disabled={photos.length === 0}
+                                >
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                                        <polyline points="10 9 9 9 8 9"></polyline>
+                                    </svg>
+                                    PDF
+                                </button>
+                                <button 
+                                    className="btn btn-secondary"
+                                    onClick={downloadAsImage}
+                                    disabled={photos.length === 0}
+                                >
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                        <polyline points="21 15 16 10 5 21"></polyline>
+                                    </svg>
+                                    {exportFormat.toUpperCase()}
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className="panel">
+                            <h2>Workspace</h2>
+                            <div className="preview-container">
+                                <div className="canvas-wrapper">
+                                    <canvas 
+                                        ref={canvasRef}
+                                        className="paper-canvas interactive-canvas"
+                                        style={{
+                                            maxWidth: '100%',
+                                            height: 'auto',
+                                            border: '1px solid #ddd',
+                                            cursor: dragging ? 'grabbing' : resizing ? 'nwse-resize' : 'default'
+                                        }}
+                                        onMouseDown={handleMouseDown}
+                                        onMouseMove={handleMouseMove}
+                                        onMouseUp={handleMouseUp}
+                                        onMouseLeave={handleMouseUp}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<PhotoLayoutApp />, document.getElementById('root'));
+    </script>
+</body>
+</html>
