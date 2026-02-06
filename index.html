@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+=<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -18,17 +18,16 @@
         }
 
         :root {
-            --primary: #ffffff;          /* main buttons & highlights */
-            --secondary: #111111;        /* secondary buttons */
-            --accent: #ffffff;           /* accent lines & film strip */
-            --border: #ffffff;           /* borders */
-            --bg: #000000;               /* page background */
-            --card: #0d0d0d;             /* panels / cards */
-            --text: #ffffff;             /* main text */
-            --text-muted: #b3b3b3;       /* muted text */
+            --primary: #ffffff;          
+            --secondary: #111111;        
+            --accent: #ffffff;           
+            --border: #ffffff;           
+            --bg: #000000;               
+            --card: #0d0d0d;             
+            --text: #ffffff;             
+            --text-muted: #b3b3b3;       
             --shadow: rgba(255, 255, 255, 0.08);
         }
-
 
         body {
             font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -102,113 +101,139 @@
             }
         }
 
+        .sidebar {
+            background: var(--card);
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+
         .panel {
             background: var(--card);
-            padding: 0;
+            padding: 1.5rem;
             overflow-y: auto;
         }
 
-        .panel:first-child {
-            border-right: 1px solid var(--border);
-            padding: 2rem 1.5rem;
-        }
-
         .panel h2 {
-            font-size: 0.85rem;
-            margin-bottom: 1.5rem;
-            color: var(--text-muted);
+            font-size: 1.1rem;
             font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            letter-spacing: -0.3px;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border);
         }
 
         .form-group {
-            margin-bottom: 1.75rem;
+            margin-bottom: 1.5rem;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 0.6rem;
-            font-weight: 400;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.9rem;
             color: var(--text);
-            font-size: 0.875rem;
-            letter-spacing: 0.2px;
+        }
+
+        .form-group input[type="file"] {
+            display: none;
         }
 
         .upload-area {
             border: 2px dashed var(--border);
             border-radius: 8px;
-            padding: 2.5rem 1.5rem;
+            padding: 2rem 1rem;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
-            background: var(--bg);
+            background: rgba(255, 255, 255, 0.02);
         }
 
         .upload-area:hover {
-            border-color: var(--accent);
-            background: rgba(231, 76, 60, 0.02);
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.04);
         }
 
         .upload-area.drag-over {
-            border-color: var(--accent);
-            background: rgba(231, 76, 60, 0.05);
-            border-style: solid;
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.06);
         }
 
-        .upload-icon {
-            margin-bottom: 1rem;
-        }
-
-        input[type="file"] {
-            display: none;
-        }
-
-        select, input[type="number"] {
+        select, input[type="number"], input[type="text"] {
             width: 100%;
-            padding: 0.7rem 1rem;
+            padding: 0.7rem;
             border: 1px solid var(--border);
             border-radius: 6px;
+            font-size: 0.95rem;
             font-family: 'Outfit', sans-serif;
-            font-size: 0.9rem;
-            transition: all 0.2s ease;
-            background: rgb(3, 3, 3);
+            transition: all 0.2s;
+            background: black;
             color: var(--text);
         }
 
-        select:focus, input[type="number"]:focus {
+        select:focus, input[type="number"]:focus, input[type="text"]:focus {
             outline: none;
             border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.7rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: 400;
         }
 
         .btn {
-            padding: 0.75rem 1.5rem;
+            padding: 0.8rem 1.5rem;
             border: none;
             border-radius: 6px;
-            font-family: 'Outfit', sans-serif;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.2s;
+            font-family: 'Outfit', sans-serif;
             display: inline-flex;
             align-items: center;
-            justify-content: center;
             gap: 0.5rem;
-            text-decoration: none;
-            letter-spacing: 0.3px;
+            justify-content: center;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         .btn-primary {
             background: var(--primary);
-            color: rgb(0, 0, 0);
+            color: black;
         }
 
         .btn-primary:hover:not(:disabled) {
-            background: #ffffff;
             transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
         }
 
         .btn-secondary {
@@ -218,13 +243,8 @@
         }
 
         .btn-secondary:hover:not(:disabled) {
-            background: #ffffff;
-        }
-
-        .btn:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-            transform: none !important;
+            background: #1a1a1a;
+            border-color: var(--primary);
         }
 
         .btn-group {
@@ -233,95 +253,19 @@
             margin-top: 1.5rem;
         }
 
-        .preview-container {
-            min-height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-            background: #fafafa;
-            position: relative;
-        }
-
-        .preview-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: 
-                linear-gradient(var(--border) 1px, transparent 1px),
-                linear-gradient(90deg, var(--border) 1px, transparent 1px);
-            background-size: 20px 20px;
-            opacity: 0.3;
-            pointer-events: none;
-        }
-
-        .canvas-wrapper {
-            background: white;
-            box-shadow: 0 10px 40px var(--shadow), 0 0 0 1px var(--border);
-            display: inline-block;
-            position: relative;
-            z-index: 1;
-        }
-
-        .paper-canvas {
-            display: block;
-            max-width: 100%;
-            height: auto;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 4rem 2rem;
-            color: var(--text-muted);
-        }
-
-        .empty-state-icon {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            opacity: 0.2;
-        }
-
-        .empty-state h3 {
-            font-size: 1.25rem;
-            margin-bottom: 0.5rem;
-            color: var(--text);
-            font-weight: 400;
-        }
-
-        .empty-state p {
-            font-size: 0.9rem;
-        }
-
-        .settings-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.75rem;
-        }
-
-        @media (max-width: 768px) {
-            .settings-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
         .info-card {
-            background: var(--bg);
-            border-radius: 6px;
-            padding: 1.25rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
             margin-top: 1.5rem;
-            border-left: 3px solid var(--accent);
         }
 
         .info-card h4 {
-            font-size: 0.8rem;
-            margin-bottom: 0.75rem;
-            color: var(--text);
+            font-size: 0.9rem;
             font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
         }
 
         .info-card p {
@@ -330,152 +274,333 @@
             line-height: 1.6;
         }
 
-        .image-preview {
-            margin-top: 1rem;
-            text-align: center;
+        .preview-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 500px;
+            background: #000;
+            border-radius: 8px;
+            padding: 2rem;
+            overflow: auto;
         }
 
-        .image-preview img {
-            max-width: 100%;
+        .canvas-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        .paper-canvas {
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+            max-width: 90%;
+            max-height: calc(100vh - 300px);
+            width: auto;
             height: auto;
-            border-radius: 6px;
-            border: 1px solid var(--border);
-        }
-
-        .image-info {
-            margin-top: 0.5rem;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            font-family: 'Space Mono', monospace;
         }
 
         .interactive-canvas {
-            cursor: move;
-            position: relative;
+            user-select: none;
         }
 
-        .interactive-canvas.dragging {
-            cursor: grabbing;
-        }
-
-        .checkbox-group {
-            display: flex;
-            align-items: center;
+        .fit-fill-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 0.5rem;
             margin-top: 0.5rem;
         }
 
-        .checkbox-group input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
+        .fit-fill-btn {
+            padding: 0.7rem;
+            border-radius: 6px;
             cursor: pointer;
-            accent-color: var(--primary);
-        }
-
-        .checkbox-group label {
-            margin: 0;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-
-        /* Film strip decoration */
-        .film-strip {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 10px;
-            background: repeating-linear-gradient(
-                90deg,
-                var(--primary) 0px,
-                var(--primary) 15px,
-                var(--accent) 15px,
-                var(--accent) 18px,
-                var(--primary) 18px,
-                var(--primary) 33px,
-                transparent 33px,
-                transparent 38px
-            );
-            z-index: 1000;
-        }
-
-        /* Scrollbar styling */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--bg);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--text-muted);
+            font-family: 'Outfit, sans-serif';
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <div class="film-strip"></div>
     <div id="root"></div>
-
     <script type="text/babel">
         const { useState, useRef, useEffect } = React;
 
-        // Photo size definitions in mm
         const PHOTO_SIZES = {
-            '4R': { width: 102, height: 152, label: '4R (4×6")' },
-            '5R': { width: 127, height: 178, label: '5R (5×7")' },
-            '6R': { width: 152, height: 203, label: '6R (6×8")' },
-            '8R': { width: 203, height: 254, label: '8R (8×10")' },
-            '2x2': { width: 51, height: 51, label: '2×2" (Passport)' },
-            '1x1': { width: 25, height: 25, label: '1×1" (ID)' },
-            'wallet': { width: 54, height: 85, label: 'Wallet Size' },
-            'keychain-rect': { width: 28, height: 47, label: 'Keychain Rectangle (2.8×4.7cm)' },
-            'keychain-curved': { width: 32, height: 46, label: 'Keychain Curved (3.2×4.6cm)' },
-            'keychain-clothes': { width: 28, height: 37, label: 'Keychain Clothes (2.8×3.7cm)' },
-            'keychain-heart': { width: 43, height: 39, label: 'Keychain Heart (4.3×3.9cm)' },
-            'keychain-octagon': { width: 30, height: 47, label: 'Keychain Octagon (3×4.7cm)' },
-            'keychain-round': { width: 36, height: 36, label: 'Keychain Round (3.6×3.6cm)' },
-            'keychain-square': { width: 33, height: 33, label: 'Keychain Square (3.3×3.3cm)' },
-            'tcg-standard': { width: 63, height: 88, label: 'TCG Standard (63×88mm)' },
-            'tcg-mini': { width: 44, height: 63, label: 'TCG Mini (44×63mm)' },
-            'tcg-jumbo': { width: 89, height: 127, label: 'TCG Jumbo (89×127mm)' },
-            'pokemon': { width: 63, height: 88, label: 'Pokémon Card (63×88mm)' },
-            'yugioh': { width: 59, height: 86, label: 'Yu-Gi-Oh! Card (59×86mm)' },
-            'custom': { width: 100, height: 100, label: 'Custom Size' },
+            '2x2': { label: '2×2 inch (51×51mm)', width: 51, height: 51 },
+            'passport': { label: 'Passport (35×45mm)', width: 35, height: 45 },
+            '1x1': { label: '1×1 inch (25×25mm)', width: 25, height: 25 },
+            '4x6': { label: '4×6 inch (102×152mm)', width: 102, height: 152 },
+            '5x7': { label: '5×7 inch (127×178mm)', width: 127, height: 178 },
+            'custom': { label: 'Custom Size', width: 50, height: 50 }
         };
 
-        // Paper size definitions in mm
         const PAPER_SIZES = {
-            'A4': { width: 210, height: 297, label: 'A4 (210×297mm)' },
-            'short': { width: 215.9, height: 279.4, label: 'Short Bond (8.5×11")' },
-            'long': { width: 215.9, height: 330.2, label: 'Long Bond (8.5×13")' },
-            'letter': { width: 215.9, height: 279.4, label: 'Letter (8.5×11")' },
-            'legal': { width: 215.9, height: 355.6, label: 'Legal (8.5×14")' },
+            'A4': { label: 'A4 (210×297mm)', width: 210, height: 297 },
+            'short': { label: 'Short Bond (8.5×11")', width: 215.9, height: 279.4 },
+            'long': { label: 'Long Bond (8.5×13")', width: 215.9, height: 330.2 },
+            'letter': { label: 'Letter (8.5×11")', width: 215.9, height: 279.4 },
+            'legal': { label: 'Legal (8.5×14")', width: 215.9, height: 355.6 }
         };
 
         function PhotoLayoutApp() {
-            const [images, setImages] = useState({}); 
+            const [images, setImages] = useState({});
             const [currentImageId, setCurrentImageId] = useState(null);
-            const [photoSize, setPhotoSize] = useState('6R');
-            const [customWidth, setCustomWidth] = useState(100);
-            const [customHeight, setCustomHeight] = useState(100);
+            const [photos, setPhotos] = useState([]);
+            const [photoSize, setPhotoSize] = useState('2x2');
             const [paperSize, setPaperSize] = useState('A4');
+            const [customWidth, setCustomWidth] = useState(50);
+            const [customHeight, setCustomHeight] = useState(50);
             const [showBorder, setShowBorder] = useState(true);
             const [borderWidth, setBorderWidth] = useState(2);
             const [borderColor, setBorderColor] = useState('#000000');
-            const [photos, setPhotos] = useState([]);
             const [selectedPhoto, setSelectedPhoto] = useState(null);
+            const [selectedPhotos, setSelectedPhotos] = useState([]);
             const [dragging, setDragging] = useState(false);
-            const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
-            const [resizing, setResizing] = useState(null);
-            const [exportFormat, setExportFormat] = useState('png'); 
+            const [resizing, setResizing] = useState(false);
+            const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+            const [exportFormat, setExportFormat] = useState('png');
+            const [isDragOver, setIsDragOver] = useState(false);
+            const [panningImage, setPanningImage] = useState(false);
+            const [panStart, setPanStart] = useState({ x: 0, y: 0 });
+            const [guides, setGuides] = useState([]);
+            const [clipboard, setClipboard] = useState(null);
+            const [zoom, setZoom] = useState(1);
+
             const canvasRef = useRef(null);
             const fileInputRef = useRef(null);
+
+            const DPI = 300;
+            const MM_TO_PX = DPI / 25.4;
+
+            useEffect(() => {
+                drawCanvas();
+            }, [photos, paperSize, selectedPhoto, selectedPhotos, guides]);
+
+            useEffect(() => {
+                const handleKeyDown = (e) => {
+                    const hasSelection = selectedPhoto !== null || selectedPhotos.length > 0;
+                    if (!hasSelection && !e.ctrlKey && !e.metaKey) return;
+                    
+                    // Ctrl+C - Copy
+                    if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
+                        if (selectedPhotos.length > 0) {
+                            e.preventDefault();
+                            const photosToCopy = photos.filter(p => selectedPhotos.includes(p.id));
+                            setClipboard(photosToCopy);
+                        } else if (selectedPhoto !== null) {
+                            e.preventDefault();
+                            const photo = photos.find(p => p.id === selectedPhoto);
+                            if (photo) {
+                                setClipboard([photo]);
+                            }
+                        }
+                    }
+                    // Ctrl+V - Paste
+                    else if ((e.ctrlKey || e.metaKey) && e.key === 'v') {
+                        if (clipboard && clipboard.length > 0) {
+                            e.preventDefault();
+                            const newPhotos = clipboard.map((photo, index) => ({
+                                ...photo,
+                                id: Date.now() + index,
+                                x: photo.x + 20,
+                                y: photo.y + 20
+                            }));
+                            setPhotos(prev => [...prev, ...newPhotos]);
+                            setSelectedPhotos(newPhotos.map(p => p.id));
+                            setSelectedPhoto(null);
+                        }
+                    }
+                    // Ctrl+A - Select All
+                    else if ((e.ctrlKey || e.metaKey) && e.key === 'a') {
+                        e.preventDefault();
+                        setSelectedPhotos(photos.map(p => p.id));
+                        setSelectedPhoto(null);
+                    }
+                    // Ctrl+D - Duplicate (alternative)
+                    else if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
+                        if (hasSelection) {
+                            e.preventDefault();
+                            duplicateSelectedPhoto();
+                        }
+                    }
+                    // Delete key
+                    else if (e.key === 'Delete' || e.key === 'Backspace') {
+                        if (hasSelection) {
+                            e.preventDefault();
+                            deleteSelectedPhoto();
+                        }
+                    }
+                    // Arrow keys for moving
+                    else if (e.key === 'ArrowLeft') {
+                        if (hasSelection) {
+                            e.preventDefault();
+                            const moveAmount = e.shiftKey ? 1 : 10;
+                            setPhotos(prev => prev.map(p =>
+                                (p.id === selectedPhoto || selectedPhotos.includes(p.id)) 
+                                    ? { ...p, x: p.x - moveAmount } 
+                                    : p
+                            ));
+                        }
+                    }
+                    else if (e.key === 'ArrowRight') {
+                        if (hasSelection) {
+                            e.preventDefault();
+                            const moveAmount = e.shiftKey ? 1 : 10;
+                            setPhotos(prev => prev.map(p =>
+                                (p.id === selectedPhoto || selectedPhotos.includes(p.id))
+                                    ? { ...p, x: p.x + moveAmount }
+                                    : p
+                            ));
+                        }
+                    }
+                    else if (e.key === 'ArrowUp') {
+                        if (hasSelection) {
+                            e.preventDefault();
+                            const moveAmount = e.shiftKey ? 1 : 10;
+                            setPhotos(prev => prev.map(p =>
+                                (p.id === selectedPhoto || selectedPhotos.includes(p.id))
+                                    ? { ...p, y: p.y - moveAmount }
+                                    : p
+                            ));
+                        }
+                    }
+                    else if (e.key === 'ArrowDown') {
+                        if (hasSelection) {
+                            e.preventDefault();
+                            const moveAmount = e.shiftKey ? 1 : 10;
+                            setPhotos(prev => prev.map(p =>
+                                (p.id === selectedPhoto || selectedPhotos.includes(p.id))
+                                    ? { ...p, y: p.y + moveAmount }
+                                    : p
+                            ));
+                        }
+                    }
+                    // D for duplicate
+                    else if (e.key === 'd' || e.key === 'D') {
+                        if (hasSelection && !e.ctrlKey && !e.metaKey) {
+                            e.preventDefault();
+                            duplicateSelectedPhoto();
+                        }
+                    }
+                    // R for rotate right
+                    else if (e.key === 'r' || e.key === 'R') {
+                        if (hasSelection) {
+                            e.preventDefault();
+                            rotateRight();
+                        }
+                    }
+                    // L for rotate left
+                    else if (e.key === 'l' || e.key === 'L') {
+                        if (hasSelection) {
+                            e.preventDefault();
+                            rotateLeft();
+                        }
+                    }
+                };
+
+                window.addEventListener('keydown', handleKeyDown);
+                return () => window.removeEventListener('keydown', handleKeyDown);
+            }, [selectedPhoto, selectedPhotos, photos, clipboard]);
+
+            const mmToPx = (mm) => mm * MM_TO_PX;
+
+            const getPhotoSizePx = () => {
+                const size = photoSize === 'custom'
+                    ? { width: customWidth, height: customHeight }
+                    : PHOTO_SIZES[photoSize];
+                return { width: mmToPx(size.width), height: mmToPx(size.height) };
+            };
+
+            const getPaperSizePx = () => {
+                const size = PAPER_SIZES[paperSize];
+                return { width: mmToPx(size.width), height: mmToPx(size.height) };
+            };
+
+            const getSnapGuides = (currentPhoto, newX, newY) => {
+                const snapDistance = 10;
+                const detectedGuides = [];
+                const paperPx = getPaperSizePx();
+
+                // Canvas center lines
+                const canvasCenterX = paperPx.width / 2;
+                const canvasCenterY = paperPx.height / 2;
+
+                // Current photo edges
+                const currentLeft = newX;
+                const currentRight = newX + currentPhoto.width;
+                const currentTop = newY;
+                const currentBottom = newY + currentPhoto.height;
+                const currentCenterX = newX + currentPhoto.width / 2;
+                const currentCenterY = newY + currentPhoto.height / 2;
+
+                let snappedX = newX;
+                let snappedY = newY;
+
+                // Check canvas alignment
+                if (Math.abs(currentCenterX - canvasCenterX) < snapDistance) {
+                    snappedX = canvasCenterX - currentPhoto.width / 2;
+                    detectedGuides.push({ type: 'vertical', pos: canvasCenterX });
+                }
+                if (Math.abs(currentCenterY - canvasCenterY) < snapDistance) {
+                    snappedY = canvasCenterY - currentPhoto.height / 2;
+                    detectedGuides.push({ type: 'horizontal', pos: canvasCenterY });
+                }
+
+                // Check alignment with other photos
+                photos.forEach(photo => {
+                    if (photo.id === currentPhoto.id) return;
+
+                    const otherLeft = photo.x;
+                    const otherRight = photo.x + photo.width;
+                    const otherTop = photo.y;
+                    const otherBottom = photo.y + photo.height;
+                    const otherCenterX = photo.x + photo.width / 2;
+                    const otherCenterY = photo.y + photo.height / 2;
+
+                    // Vertical alignment
+                    if (Math.abs(currentLeft - otherLeft) < snapDistance) {
+                        snappedX = otherLeft;
+                        detectedGuides.push({ type: 'vertical', pos: otherLeft });
+                    } else if (Math.abs(currentRight - otherRight) < snapDistance) {
+                        snappedX = otherRight - currentPhoto.width;
+                        detectedGuides.push({ type: 'vertical', pos: otherRight });
+                    } else if (Math.abs(currentCenterX - otherCenterX) < snapDistance) {
+                        snappedX = otherCenterX - currentPhoto.width / 2;
+                        detectedGuides.push({ type: 'vertical', pos: otherCenterX });
+                    } else if (Math.abs(currentLeft - otherRight) < snapDistance) {
+                        snappedX = otherRight;
+                        detectedGuides.push({ type: 'vertical', pos: otherRight });
+                    } else if (Math.abs(currentRight - otherLeft) < snapDistance) {
+                        snappedX = otherLeft - currentPhoto.width;
+                        detectedGuides.push({ type: 'vertical', pos: otherLeft });
+                    }
+
+                    // Horizontal alignment
+                    if (Math.abs(currentTop - otherTop) < snapDistance) {
+                        snappedY = otherTop;
+                        detectedGuides.push({ type: 'horizontal', pos: otherTop });
+                    } else if (Math.abs(currentBottom - otherBottom) < snapDistance) {
+                        snappedY = otherBottom - currentPhoto.height;
+                        detectedGuides.push({ type: 'horizontal', pos: otherBottom });
+                    } else if (Math.abs(currentCenterY - otherCenterY) < snapDistance) {
+                        snappedY = otherCenterY - currentPhoto.height / 2;
+                        detectedGuides.push({ type: 'horizontal', pos: otherCenterY });
+                    } else if (Math.abs(currentTop - otherBottom) < snapDistance) {
+                        snappedY = otherBottom;
+                        detectedGuides.push({ type: 'horizontal', pos: otherBottom });
+                    } else if (Math.abs(currentBottom - otherTop) < snapDistance) {
+                        snappedY = otherTop - currentPhoto.height;
+                        detectedGuides.push({ type: 'horizontal', pos: otherTop });
+                    }
+                });
+
+                return { x: snappedX, y: snappedY, guides: detectedGuides };
+            };
 
             const handleFileChange = (e) => {
                 const file = e.target.files[0];
@@ -484,17 +609,12 @@
                     reader.onload = (event) => {
                         const img = new Image();
                         img.onload = () => {
-                            const imageId = Date.now();
+                            const id = Date.now();
                             setImages(prev => ({
                                 ...prev,
-                                [imageId]: {
-                                    id: imageId,
-                                    data: event.target.result,
-                                    img: img,
-                                    name: file.name
-                                }
+                                [id]: { id, name: file.name, data: event.target.result, img }
                             }));
-                            setCurrentImageId(imageId);
+                            setCurrentImageId(id);
                         };
                         img.src = event.target.result;
                     };
@@ -504,23 +624,19 @@
 
             const handleDrop = (e) => {
                 e.preventDefault();
+                setIsDragOver(false);
                 const file = e.dataTransfer.files[0];
                 if (file && file.type.startsWith('image/')) {
                     const reader = new FileReader();
                     reader.onload = (event) => {
                         const img = new Image();
                         img.onload = () => {
-                            const imageId = Date.now();
+                            const id = Date.now();
                             setImages(prev => ({
                                 ...prev,
-                                [imageId]: {
-                                    id: imageId,
-                                    data: event.target.result,
-                                    img: img,
-                                    name: file.name
-                                }
+                                [id]: { id, name: file.name, data: event.target.result, img }
                             }));
-                            setCurrentImageId(imageId);
+                            setCurrentImageId(id);
                         };
                         img.src = event.target.result;
                     };
@@ -530,398 +646,422 @@
 
             const handleDragOver = (e) => {
                 e.preventDefault();
-                e.currentTarget.classList.add('drag-over');
+                setIsDragOver(true);
             };
 
-            const handleDragLeave = (e) => {
-                e.currentTarget.classList.remove('drag-over');
+            const handleDragLeave = () => {
+                setIsDragOver(false);
             };
-
-            useEffect(() => {
-                drawLayout();
-            }, [photos, paperSize, showBorder, borderWidth, borderColor, selectedPhoto, images, dragging]);
-
-            useEffect(() => {
-                const handleKeyDown = (e) => {
-                    if ((e.key === 'Delete' || e.key === 'Backspace') && selectedPhoto !== null) {
-                        e.preventDefault();
-                        deleteSelectedPhoto();
-                    }
-                    if ((e.ctrlKey || e.metaKey) && e.key === 'c' && selectedPhoto !== null) {
-                        e.preventDefault();
-                        const photoToCopy = photos.find(p => p.id === selectedPhoto);
-                        if (photoToCopy) {
-                            sessionStorage.setItem('copiedPhoto', JSON.stringify(photoToCopy));
-                        }
-                    }
-                    if ((e.ctrlKey || e.metaKey) && e.key === 'v') {
-                        e.preventDefault();
-                        const copiedPhoto = sessionStorage.getItem('copiedPhoto');
-                        if (copiedPhoto) {
-                            const photo = JSON.parse(copiedPhoto);
-                            const newPhoto = {
-                                ...photo,
-                                id: Date.now(),
-                                x: photo.x + 20,
-                                y: photo.y + 20
-                            };
-                            setPhotos([...photos, newPhoto]);
-                            setSelectedPhoto(newPhoto.id);
-                        }
-                    }
-                    if ((e.ctrlKey || e.metaKey) && e.key === 'd' && selectedPhoto !== null) {
-                        e.preventDefault();
-                        duplicateSelectedPhoto();
-                    }
-                    if ((e.ctrlKey || e.metaKey) && e.key === 'a') {
-                        e.preventDefault();
-                    }
-                    if (e.key === 'r' && selectedPhoto !== null && !e.ctrlKey && !e.metaKey) {
-                        e.preventDefault();
-                        rotateRight();
-                    }
-                    if (e.key === 'l' && selectedPhoto !== null && !e.ctrlKey && !e.metaKey) {
-                        e.preventDefault();
-                        rotateLeft();
-                    }
-                    if (selectedPhoto !== null && ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
-                        e.preventDefault();
-                        const moveAmount = e.shiftKey ? 10 : 1;
-                        setPhotos(photos.map(p => {
-                            if (p.id === selectedPhoto) {
-                                let newX = p.x;
-                                let newY = p.y;
-                                if (e.key === 'ArrowLeft') newX -= moveAmount;
-                                if (e.key === 'ArrowRight') newX += moveAmount;
-                                if (e.key === 'ArrowUp') newY -= moveAmount;
-                                if (e.key === 'ArrowDown') newY += moveAmount;
-                                return { ...p, x: newX, y: newY };
-                            }
-                            return p;
-                        }));
-                    }
-                    if (e.key === 'Escape') {
-                        setSelectedPhoto(null);
-                    }
-                    if (e.key === 'Enter' && currentImageId && !e.ctrlKey && !e.metaKey) {
-                        e.preventDefault();
-                        addPhoto();
-                    }
-                };
-                window.addEventListener('keydown', handleKeyDown);
-                return () => window.removeEventListener('keydown', handleKeyDown);
-            }, [photos, selectedPhoto, currentImageId]);
 
             const addPhoto = () => {
-                if (!currentImageId || !images[currentImageId]) return;
-                const paper = PAPER_SIZES[paperSize];
-                const photoSizeData = photoSize === 'custom' 
-                    ? { width: customWidth, height: customHeight }
-                    : PHOTO_SIZES[photoSize];
-                const dpi = 300;
-                const scale = dpi / 25.4;
-                const photoWidthPx = photoSizeData.width * scale;
-                const photoHeightPx = photoSizeData.height * scale;
+                if (!currentImageId) return;
+                const paperPx = getPaperSizePx();
+                const photoPx = getPhotoSizePx();
                 const newPhoto = {
                     id: Date.now(),
-                    x: 50,
-                    y: 50,
-                    width: photoWidthPx,
-                    height: photoHeightPx,
-                    photoSize: photoSize,
+                    imageId: currentImageId,
+                    x: (paperPx.width - photoPx.width) / 2,
+                    y: (paperPx.height - photoPx.height) / 2,
+                    width: photoPx.width,
+                    height: photoPx.height,
                     rotation: 0,
-                    imageId: currentImageId 
+                    fitMode: 'fill', // 'fit', 'fill', or 'stretch'
+                    offsetX: 0,
+                    offsetY: 0,
+                    scale: 1
                 };
-                setPhotos([...photos, newPhoto]);
-                setSelectedPhoto(newPhoto.id);
+                setPhotos(prev => [...prev, newPhoto]);
             };
 
-            const deleteSelectedPhoto = () => {
-                if (selectedPhoto !== null) {
-                    setPhotos(photos.filter(p => p.id !== selectedPhoto));
-                    setSelectedPhoto(null);
-                }
-            };
-
-            const duplicateSelectedPhoto = () => {
-                if (selectedPhoto !== null) {
-                    const photoToDuplicate = photos.find(p => p.id === selectedPhoto);
-                    if (photoToDuplicate) {
-                        const newPhoto = {
-                            ...photoToDuplicate,
-                            id: Date.now(),
-                            x: photoToDuplicate.x + 20,
-                            y: photoToDuplicate.y + 20
-                        };
-                        setPhotos([...photos, newPhoto]);
-                        setSelectedPhoto(newPhoto.id);
-                    }
-                }
-            };
-
-            const clearAll = () => {
-                setPhotos([]);
-                setSelectedPhoto(null);
-            };
-
-            const rotateLeft = () => {
-                if (selectedPhoto !== null) {
-                    setPhotos(photos.map(p => 
-                        p.id === selectedPhoto 
-                            ? { ...p, rotation: (p.rotation - 90 + 360) % 360 }
-                            : p
-                    ));
-                }
-            };
-
-            const rotateRight = () => {
-                if (selectedPhoto !== null) {
-                    setPhotos(photos.map(p => 
-                        p.id === selectedPhoto 
-                            ? { ...p, rotation: (p.rotation + 90) % 360 }
-                            : p
-                    ));
-                }
-            };
-
-            const drawLayout = () => {
+            const drawCanvas = () => {
                 const canvas = canvasRef.current;
                 if (!canvas) return;
                 const ctx = canvas.getContext('2d');
-                const paper = PAPER_SIZES[paperSize];
-                const dpi = 300;
-                const scale = dpi / 25.4;
-                canvas.width = paper.width * scale;
-                canvas.height = paper.height * scale;
-                ctx.fillStyle = 'white';
+                const paperPx = getPaperSizePx();
+
+                canvas.width = paperPx.width;
+                canvas.height = paperPx.height;
+
+                ctx.fillStyle = '#ffffff';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
                 photos.forEach(photo => {
-                    const imageData = images[photo.imageId];
-                    if (!imageData || !imageData.img) return;
-                    const image = imageData.img;
+                    const image = images[photo.imageId];
+                    if (!image) return;
+
                     ctx.save();
                     ctx.translate(photo.x + photo.width / 2, photo.y + photo.height / 2);
                     ctx.rotate((photo.rotation * Math.PI) / 180);
-                    ctx.translate(-photo.width / 2, -photo.height / 2);
-                    const photoAspect = photo.width / photo.height;
-                    const imageAspect = image.width / image.height;
-                    let sx, sy, sWidth, sHeight;
-                    if (imageAspect > photoAspect) {
-                        sHeight = image.height;
-                        sWidth = image.height * photoAspect;
-                        sx = (image.width - sWidth) / 2;
-                        sy = 0;
+
+                    // Draw image based on fit mode
+                    const img = image.img;
+                    const frameWidth = photo.width;
+                    const frameHeight = photo.height;
+
+                    if (photo.fitMode === 'stretch') {
+                        // Stretch mode: distort to fit frame exactly
+                        ctx.drawImage(
+                            img,
+                            -frameWidth / 2,
+                            -frameHeight / 2,
+                            frameWidth,
+                            frameHeight
+                        );
                     } else {
-                        sWidth = image.width;
-                        sHeight = image.width / photoAspect;
-                        sx = 0;
-                        sy = (image.height - sHeight) / 2;
+                        // Fit or Fill mode
+                        const imgAspect = img.width / img.height;
+                        const frameAspect = frameWidth / frameHeight;
+
+                        let drawWidth, drawHeight;
+
+                        if (photo.fitMode === 'fit') {
+                            // Fit: entire image visible, may have letterboxing
+                            if (imgAspect > frameAspect) {
+                                drawWidth = frameWidth;
+                                drawHeight = frameWidth / imgAspect;
+                            } else {
+                                drawHeight = frameHeight;
+                                drawWidth = frameHeight * imgAspect;
+                            }
+                        } else {
+                            // Fill: fills frame completely, may crop
+                            if (imgAspect > frameAspect) {
+                                drawHeight = frameHeight;
+                                drawWidth = frameHeight * imgAspect;
+                            } else {
+                                drawWidth = frameWidth;
+                                drawHeight = frameWidth / imgAspect;
+                            }
+                        }
+
+                        // Apply user panning offset
+                        const offsetX = photo.offsetX || 0;
+                        const offsetY = photo.offsetY || 0;
+
+                        // Clip to frame
+                        ctx.beginPath();
+                        ctx.rect(-frameWidth / 2, -frameHeight / 2, frameWidth, frameHeight);
+                        ctx.clip();
+
+                        ctx.drawImage(
+                            img,
+                            -drawWidth / 2 + offsetX,
+                            -drawHeight / 2 + offsetY,
+                            drawWidth,
+                            drawHeight
+                        );
                     }
-                    ctx.drawImage(image, sx, sy, sWidth, sHeight, 0, 0, photo.width, photo.height);
-                    if (showBorder) {
-                        ctx.strokeStyle = borderColor;
-                        ctx.lineWidth = borderWidth;
-                        ctx.strokeRect(0, 0, photo.width, photo.height);
-                    }
-                    if (photo.id === selectedPhoto) {
-                        ctx.strokeStyle = '#00d9ff';
-                        ctx.lineWidth = 3;
-                        ctx.setLineDash([5, 5]);
-                        ctx.strokeRect(-5, -5, photo.width + 10, photo.height + 10);
-                        ctx.setLineDash([]);
-                        const handleSize = 10;
-                        ctx.fillStyle = '#00d9ff';
-                        ctx.fillRect(-handleSize/2, -handleSize/2, handleSize, handleSize);
-                        ctx.fillRect(photo.width - handleSize/2, -handleSize/2, handleSize, handleSize);
-                        ctx.fillRect(-handleSize/2, photo.height - handleSize/2, handleSize, handleSize);
-                        ctx.fillRect(photo.width - handleSize/2, photo.height - handleSize/2, handleSize, handleSize);
-                    }
+
                     ctx.restore();
 
-                    // --- DRAW ALIGNMENT GUIDES ---
-                    if (photo.id === selectedPhoto && dragging) {
+                    // Draw border
+                    if (showBorder) {
                         ctx.save();
-                        ctx.strokeStyle = '#ff00ff';
-                        ctx.lineWidth = 2;
-                        ctx.setLineDash([10, 10]);
-                        photos.forEach(other => {
-                            if (other.id === selectedPhoto) return;
-                            // Vertical guides
-                            if (Math.abs(photo.x - other.x) < 1) { ctx.beginPath(); ctx.moveTo(other.x, 0); ctx.lineTo(other.x, canvas.height); ctx.stroke(); }
-                            if (Math.abs((photo.x + photo.width) - (other.x + other.width)) < 1) { ctx.beginPath(); ctx.moveTo(other.x + other.width, 0); ctx.lineTo(other.x + other.width, canvas.height); ctx.stroke(); }
-                            if (Math.abs((photo.x + photo.width / 2) - (other.x + other.width / 2)) < 1) { ctx.beginPath(); ctx.moveTo(other.x + other.width / 2, 0); ctx.lineTo(other.x + other.width / 2, canvas.height); ctx.stroke(); }
-                            // Horizontal guides
-                            if (Math.abs(photo.y - other.y) < 1) { ctx.beginPath(); ctx.moveTo(0, other.y); ctx.lineTo(canvas.width, other.y); ctx.stroke(); }
-                            if (Math.abs((photo.y + photo.height) - (other.y + other.height)) < 1) { ctx.beginPath(); ctx.moveTo(0, other.y + other.height); ctx.lineTo(canvas.width, other.y + other.height); ctx.stroke(); }
-                            if (Math.abs((photo.y + photo.height / 2) - (other.y + other.height / 2)) < 1) { ctx.beginPath(); ctx.moveTo(0, other.y + other.height / 2); ctx.lineTo(canvas.width, other.y + other.height / 2); ctx.stroke(); }
-                        });
+                        ctx.translate(photo.x + photo.width / 2, photo.y + photo.height / 2);
+                        ctx.rotate((photo.rotation * Math.PI) / 180);
+                        ctx.strokeStyle = borderColor;
+                        ctx.lineWidth = borderWidth;
+                        ctx.strokeRect(-photo.width / 2, -photo.height / 2, photo.width, photo.height);
+                        ctx.restore();
+                    }
+
+                    // Draw selection indicator
+                    if (selectedPhoto === photo.id || selectedPhotos.includes(photo.id)) {
+                        ctx.save();
+                        ctx.translate(photo.x + photo.width / 2, photo.y + photo.height / 2);
+                        ctx.rotate((photo.rotation * Math.PI) / 180);
+                        ctx.strokeStyle = '#0066ff';
+                        ctx.lineWidth = 4;
+                        ctx.setLineDash([10, 5]);
+                        ctx.strokeRect(-photo.width / 2 - 5, -photo.height / 2 - 5, photo.width + 10, photo.height + 10);
+                        
+                        // Draw resize handle only for single selection
+                        if (selectedPhoto === photo.id && selectedPhotos.length === 0) {
+                            ctx.fillStyle = '#0066ff';
+                            ctx.fillRect(photo.width / 2 - 5, photo.height / 2 - 5, 10, 10);
+                        }
                         ctx.restore();
                     }
                 });
+
+                // Draw alignment guides
+                if (guides.length > 0) {
+                    ctx.save();
+                    ctx.strokeStyle = '#00ff00';
+                    ctx.lineWidth = 1;
+                    ctx.setLineDash([5, 5]);
+
+                    guides.forEach(guide => {
+                        if (guide.type === 'vertical') {
+                            ctx.beginPath();
+                            ctx.moveTo(guide.pos, 0);
+                            ctx.lineTo(guide.pos, canvas.height);
+                            ctx.stroke();
+                        } else {
+                            ctx.beginPath();
+                            ctx.moveTo(0, guide.pos);
+                            ctx.lineTo(canvas.width, guide.pos);
+                            ctx.stroke();
+                        }
+                    });
+
+                    ctx.restore();
+                }
             };
 
-            const getPhotoAtPosition = (x, y) => {
-                const canvas = canvasRef.current;
-                if (!canvas) return null;
-                const rect = canvas.getBoundingClientRect();
-                const scaleX = canvas.width / rect.width;
-                const scaleY = canvas.height / rect.height;
-                const canvasX = (x - rect.left) * scaleX;
-                const canvasY = (y - rect.top) * scaleY;
+            const getClickedPhoto = (x, y) => {
                 for (let i = photos.length - 1; i >= 0; i--) {
                     const photo = photos[i];
-                    if (canvasX >= photo.x && canvasX <= photo.x + photo.width &&
-                        canvasY >= photo.y && canvasY <= photo.y + photo.height) {
+                    const dx = x - (photo.x + photo.width / 2);
+                    const dy = y - (photo.y + photo.height / 2);
+                    const angle = (-photo.rotation * Math.PI) / 180;
+                    const rx = dx * Math.cos(angle) - dy * Math.sin(angle);
+                    const ry = dx * Math.sin(angle) + dy * Math.cos(angle);
+
+                    if (Math.abs(rx) <= photo.width / 2 && Math.abs(ry) <= photo.height / 2) {
                         return photo;
                     }
                 }
                 return null;
             };
 
-            const getResizeHandle = (photo, x, y) => {
-                if (!photo) return null;
+            const isNearResizeHandle = (x, y, photo) => {
+                const handleX = photo.x + photo.width;
+                const handleY = photo.y + photo.height;
+                const distance = Math.sqrt((x - handleX) ** 2 + (y - handleY) ** 2);
+                return distance < 15;
+            };
+
+            const handleMouseDown = (e) => {
                 const canvas = canvasRef.current;
                 const rect = canvas.getBoundingClientRect();
                 const scaleX = canvas.width / rect.width;
                 const scaleY = canvas.height / rect.height;
-                const canvasX = (x - rect.left) * scaleX;
-                const canvasY = (y - rect.top) * scaleY;
-                const threshold = 15;
-                const corners = [
-                    { name: 'nw', x: photo.x, y: photo.y },
-                    { name: 'ne', x: photo.x + photo.width, y: photo.y },
-                    { name: 'sw', x: photo.x, y: photo.y + photo.height },
-                    { name: 'se', x: photo.x + photo.width, y: photo.y + photo.height }
-                ];
-                for (const corner of corners) {
-                    if (Math.abs(canvasX - corner.x) < threshold && Math.abs(canvasY - corner.y) < threshold) return corner.name;
-                }
-                return null;
-            };
+                const x = (e.clientX - rect.left) * scaleX;
+                const y = (e.clientY - rect.top) * scaleY;
 
-            const handleMouseDown = (e) => {
-                const photo = getPhotoAtPosition(e.clientX, e.clientY);
-                if (photo) {
-                    setSelectedPhoto(photo.id);
-                    const handle = getResizeHandle(photo, e.clientX, e.clientY);
-                    if (handle) {
-                        setResizing({ photoId: photo.id, handle });
+                const clickedPhoto = getClickedPhoto(x, y);
+
+                if (clickedPhoto) {
+                    // Shift+Click for group selection
+                    if (e.shiftKey && !e.ctrlKey && !e.metaKey) {
+                        if (selectedPhotos.includes(clickedPhoto.id)) {
+                            setSelectedPhotos(prev => prev.filter(id => id !== clickedPhoto.id));
+                        } else {
+                            setSelectedPhotos(prev => [...prev, clickedPhoto.id]);
+                        }
+                        setSelectedPhoto(null);
                     } else {
-                        setDragging(true);
-                        const canvas = canvasRef.current;
-                        const rect = canvas.getBoundingClientRect();
-                        const scaleX = canvas.width / rect.width;
-                        const scaleY = canvas.height / rect.height;
-                        const canvasX = (e.clientX - rect.left) * scaleX;
-                        const canvasY = (e.clientY - rect.top) * scaleY;
-                        setDragOffset({ x: canvasX - photo.x, y: canvasY - photo.y });
+                        // Clear group selection if clicking without shift
+                        if (selectedPhotos.length > 0) {
+                            setSelectedPhotos([]);
+                        }
+                        setSelectedPhoto(clickedPhoto.id);
+
+                        if (isNearResizeHandle(x, y, clickedPhoto)) {
+                            setResizing(true);
+                            setDragStart({ x, y });
+                        } else {
+                            // Check if we're panning the image (hold Ctrl/Cmd key)
+                            if (e.ctrlKey || e.metaKey) {
+                                setPanningImage(true);
+                                setPanStart({ x, y });
+                            } else {
+                                setDragging(true);
+                                setDragStart({ x: x - clickedPhoto.x, y: y - clickedPhoto.y });
+                            }
+                        }
                     }
                 } else {
                     setSelectedPhoto(null);
+                    setSelectedPhotos([]);
                 }
             };
 
             const handleMouseMove = (e) => {
                 const canvas = canvasRef.current;
-                if (!canvas) return;
                 const rect = canvas.getBoundingClientRect();
                 const scaleX = canvas.width / rect.width;
                 const scaleY = canvas.height / rect.height;
-                const canvasX = (e.clientX - rect.left) * scaleX;
-                const canvasY = (e.clientY - rect.top) * scaleY;
+                const x = (e.clientX - rect.left) * scaleX;
+                const y = (e.clientY - rect.top) * scaleY;
 
                 if (dragging && selectedPhoto !== null) {
-                    let newX = canvasX - dragOffset.x;
-                    let newY = canvasY - dragOffset.y;
-                    const activePhoto = photos.find(p => p.id === selectedPhoto);
-                    const SNAP_THRESHOLD = 15;
-
-                    photos.forEach(other => {
-                        if (other.id === selectedPhoto) return;
-                        // X snapping
-                        const xPoints = [other.x, other.x + other.width, other.x + other.width / 2];
-                        xPoints.forEach(pt => {
-                            if (Math.abs(newX - pt) < SNAP_THRESHOLD) newX = pt;
-                            if (Math.abs((newX + activePhoto.width) - pt) < SNAP_THRESHOLD) newX = pt - activePhoto.width;
-                            if (Math.abs((newX + activePhoto.width / 2) - pt) < SNAP_THRESHOLD) newX = pt - activePhoto.width / 2;
-                        });
-                        // Y snapping
-                        const yPoints = [other.y, other.y + other.height, other.y + other.height / 2];
-                        yPoints.forEach(pt => {
-                            if (Math.abs(newY - pt) < SNAP_THRESHOLD) newY = pt;
-                            if (Math.abs((newY + activePhoto.height) - pt) < SNAP_THRESHOLD) newY = pt - activePhoto.height;
-                            if (Math.abs((newY + activePhoto.height / 2) - pt) < SNAP_THRESHOLD) newY = pt - activePhoto.height / 2;
-                        });
-                    });
-                    setPhotos(photos.map(p => p.id === selectedPhoto ? { ...p, x: newX, y: newY } : p));
-                } else if (resizing) {
-                    const photo = photos.find(p => p.id === resizing.photoId);
-                    if (!photo) return;
-                    const photoSizeObj = PHOTO_SIZES[photo.photoSize] || { width: customWidth, height: customHeight };
-                    const aspectRatio = photoSizeObj.width / photoSizeObj.height;
-                    let newWidth = photo.width, newHeight = photo.height, newX = photo.x, newY = photo.y;
-                    switch (resizing.handle) {
-                        case 'se': newWidth = canvasX - photo.x; newHeight = newWidth / aspectRatio; break;
-                        case 'sw': newWidth = photo.x + photo.width - canvasX; newHeight = newWidth / aspectRatio; newX = canvasX; break;
-                        case 'ne': newWidth = canvasX - photo.x; newHeight = newWidth / aspectRatio; newY = photo.y + photo.height - newHeight; break;
-                        case 'nw': newWidth = photo.x + photo.width - canvasX; newHeight = newWidth / aspectRatio; newX = canvasX; newY = photo.y + photo.height - newHeight; break;
+                    const currentPhoto = photos.find(p => p.id === selectedPhoto);
+                    if (currentPhoto) {
+                        const newX = x - dragStart.x;
+                        const newY = y - dragStart.y;
+                        const snapped = getSnapGuides(currentPhoto, newX, newY);
+                        
+                        // Move selected photo and all grouped photos together
+                        const deltaX = snapped.x - currentPhoto.x;
+                        const deltaY = snapped.y - currentPhoto.y;
+                        
+                        setPhotos(prev => prev.map(p => {
+                            if (p.id === selectedPhoto || selectedPhotos.includes(p.id)) {
+                                return { ...p, x: p.x + deltaX, y: p.y + deltaY };
+                            }
+                            return p;
+                        }));
+                        setGuides(snapped.guides);
                     }
-                    if (newWidth > 50 && newHeight > 50) setPhotos(photos.map(p => p.id === resizing.photoId ? { ...p, width: newWidth, height: newHeight, x: newX, y: newY } : p));
+                } else if (resizing && selectedPhoto !== null) {
+                    setPhotos(prev => prev.map(p => {
+                        if (p.id === selectedPhoto) {
+                            const deltaX = x - dragStart.x;
+                            const deltaY = y - dragStart.y;
+                            const newWidth = Math.max(50, p.width + deltaX);
+                            const newHeight = Math.max(50, p.height + deltaY);
+                            setDragStart({ x, y });
+                            return { ...p, width: newWidth, height: newHeight };
+                        }
+                        return p;
+                    }));
+                } else if (panningImage && selectedPhoto !== null) {
+                    setPhotos(prev => prev.map(p => {
+                        if (p.id === selectedPhoto) {
+                            const deltaX = x - panStart.x;
+                            const deltaY = y - panStart.y;
+                            return {
+                                ...p,
+                                offsetX: (p.offsetX || 0) + deltaX,
+                                offsetY: (p.offsetY || 0) + deltaY
+                            };
+                        }
+                        return p;
+                    }));
+                    setPanStart({ x, y });
+                } else {
+                    setGuides([]);
                 }
             };
 
             const handleMouseUp = () => {
                 setDragging(false);
-                setResizing(null);
+                setResizing(false);
+                setPanningImage(false);
+                setGuides([]);
+            };
+
+            const rotateLeft = () => {
+                if (selectedPhoto === null && selectedPhotos.length === 0) return;
+                setPhotos(prev => prev.map(p =>
+                    (p.id === selectedPhoto || selectedPhotos.includes(p.id)) 
+                        ? { ...p, rotation: p.rotation - 90 } 
+                        : p
+                ));
+            };
+
+            const rotateRight = () => {
+                if (selectedPhoto === null && selectedPhotos.length === 0) return;
+                setPhotos(prev => prev.map(p =>
+                    (p.id === selectedPhoto || selectedPhotos.includes(p.id))
+                        ? { ...p, rotation: p.rotation + 90 }
+                        : p
+                ));
+            };
+
+            const duplicateSelectedPhoto = () => {
+                if (selectedPhotos.length > 0) {
+                    const photosToDuplicate = photos.filter(p => selectedPhotos.includes(p.id));
+                    const newPhotos = photosToDuplicate.map((photo, index) => ({
+                        ...photo,
+                        id: Date.now() + index,
+                        x: photo.x + 20,
+                        y: photo.y + 20
+                    }));
+                    setPhotos(prev => [...prev, ...newPhotos]);
+                    setSelectedPhotos(newPhotos.map(p => p.id));
+                } else if (selectedPhoto !== null) {
+                    const photo = photos.find(p => p.id === selectedPhoto);
+                    if (photo) {
+                        const newPhoto = { ...photo, id: Date.now(), x: photo.x + 20, y: photo.y + 20 };
+                        setPhotos(prev => [...prev, newPhoto]);
+                        setSelectedPhoto(newPhoto.id);
+                    }
+                }
+            };
+
+            const deleteSelectedPhoto = () => {
+                if (selectedPhotos.length > 0) {
+                    setPhotos(prev => prev.filter(p => !selectedPhotos.includes(p.id)));
+                    setSelectedPhotos([]);
+                } else if (selectedPhoto !== null) {
+                    setPhotos(prev => prev.filter(p => p.id !== selectedPhoto));
+                    setSelectedPhoto(null);
+                }
+            };
+
+            const clearAll = () => {
+                setPhotos([]);
+                setSelectedPhoto(null);
+                setSelectedPhotos([]);
+            };
+
+            const zoomIn = () => {
+                setZoom(prev => Math.min(prev + 0.1, 3));
+            };
+
+            const zoomOut = () => {
+                setZoom(prev => Math.max(prev - 0.1, 0.3));
+            };
+
+            const resetZoom = () => {
+                setZoom(1);
+            };
+
+            const setFitMode = (mode) => {
+                if (selectedPhoto === null && selectedPhotos.length === 0) return;
+                setPhotos(prev => prev.map(p =>
+                    (p.id === selectedPhoto || selectedPhotos.includes(p.id))
+                        ? { ...p, fitMode: mode, offsetX: 0, offsetY: 0 }
+                        : p
+                ));
             };
 
             const downloadAsPDF = async () => {
                 const canvas = canvasRef.current;
-                if (!canvas) return;
                 const { jsPDF } = window.jspdf;
-                const paper = PAPER_SIZES[paperSize];
-                const orientation = paper.width > paper.height ? 'landscape' : 'portrait';
-                const pdf = new jsPDF({ orientation: orientation, unit: 'mm', format: [paper.width, paper.height] });
-                const imgData = canvas.toDataURL('image/jpeg', 1.0);
-                pdf.addImage(imgData, 'JPEG', 0, 0, paper.width, paper.height);
-                pdf.save(`photo-layout-${paperSize}.pdf`);
+                const currentPaperSize = PAPER_SIZES[paperSize];
+                const pdf = new jsPDF({
+                    orientation: currentPaperSize.width > currentPaperSize.height ? 'landscape' : 'portrait',
+                    unit: 'mm',
+                    format: [currentPaperSize.width, currentPaperSize.height]
+                });
+                const imgData = canvas.toDataURL('image/png');
+                pdf.addImage(imgData, 'PNG', 0, 0, currentPaperSize.width, currentPaperSize.height);
+                pdf.save('photo-layout.pdf');
             };
 
-            const downloadAsImage = () => {
+            const downloadAsImage = async () => {
                 const canvas = canvasRef.current;
-                if (!canvas) return;
-                const mimeType = exportFormat === 'jpg' ? 'image/jpeg' : 'image/png';
-                const extension = exportFormat === 'jpg' ? 'jpg' : 'png';
-                const quality = exportFormat === 'jpg' ? 0.95 : undefined;
-                canvas.toBlob((blob) => {
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = `photo-layout-${paperSize}.${extension}`;
-                    a.click();
-                    URL.revokeObjectURL(url);
-                }, mimeType, quality);
+                const format = exportFormat === 'png' ? 'image/png' : 'image/jpeg';
+                const link = document.createElement('a');
+                link.download = `photo-layout.${exportFormat}`;
+                link.href = canvas.toDataURL(format);
+                link.click();
             };
+
+            const selectedPhotoData = photos.find(p => p.id === selectedPhoto);
 
             return (
                 <div className="container">
                     <div className="header">
                         <h1>
-                            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-                                <circle cx="12" cy="13" r="4"></circle>
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                <polyline points="21 15 16 10 5 21"></polyline>
                             </svg>
                             Photo Layout Studio
                         </h1>
-                        <p>Professional photo arrangement tool</p>
+                        <p>Professional photo arrangement with fit/fill controls</p>
                     </div>
                     <div className="main-grid">
-                        <div className="panel">
-                            <h2>Controls</h2>
+                        <div className="sidebar">
                             <div className="form-group">
                                 <label>Upload Image</label>
-                                <div className="upload-area" onClick={() => fileInputRef.current?.click()} onDrop={handleDrop} onDragOver={handleDragOver} onDragLeave={handleDragLeave}>
+                                <div className={`upload-area ${isDragOver ? 'drag-over' : ''}`} onClick={() => fileInputRef.current?.click()} onDrop={handleDrop} onDragOver={handleDragOver} onDragLeave={handleDragLeave}>
                                     <div className="upload-icon">
                                         <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{opacity: 0.6}}>
                                             <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
@@ -940,7 +1080,7 @@
                                         {Object.values(images).map(img => (
                                             <div key={img.id} onClick={() => setCurrentImageId(img.id)} style={{ position: 'relative', cursor: 'pointer', border: currentImageId === img.id ? '2px solid var(--primary)' : '1px solid var(--border)', borderRadius: '4px', overflow: 'hidden', aspectRatio: '1', transition: 'all 0.2s' }}>
                                                 <img src={img.data} alt={img.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                                                {currentImageId === img.id && ( <div style={{ position: 'absolute', top: '4px', right: '4px', background: 'var(--primary)', color: 'white', borderRadius: '50%', width: '18px', height: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: 'bold' }}>✓</div> )}
+                                                {currentImageId === img.id && ( <div style={{ position: 'absolute', top: '4px', right: '4px', background: 'var(--primary)', color: 'black', borderRadius: '50%', width: '18px', height: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: 'bold' }}>✓</div> )}
                                             </div>
                                         ))}
                                     </div>
@@ -966,6 +1106,58 @@
                                     <div className="form-group"><label>Height (mm)</label><input type="number" value={customHeight} onChange={(e) => setCustomHeight(Number(e.target.value))} min="10" max="300" /></div>
                                 </div>
                             )}
+
+                            {(selectedPhoto !== null || selectedPhotos.length > 0) && selectedPhotoData && (
+                                <div className="form-group">
+                                    <label>Image Display Mode {selectedPhotos.length > 0 && `(${selectedPhotos.length} photos)`}</label>
+                                    <div className="fit-fill-options">
+                                        <button 
+                                            onClick={() => setFitMode('fit')}
+                                            className="fit-fill-btn"
+                                            style={{
+                                                border: selectedPhotoData.fitMode === 'fit' ? '2px solid var(--primary)' : '1px solid var(--border)',
+                                                background: selectedPhotoData.fitMode === 'fit' ? 'var(--primary)' : 'black',
+                                                color: selectedPhotoData.fitMode === 'fit' ? 'black' : 'var(--text)'
+                                            }}
+                                        >
+                                            Fit
+                                        </button>
+                                        <button 
+                                            onClick={() => setFitMode('fill')}
+                                            className="fit-fill-btn"
+                                            style={{
+                                                border: selectedPhotoData.fitMode === 'fill' ? '2px solid var(--primary)' : '1px solid var(--border)',
+                                                background: selectedPhotoData.fitMode === 'fill' ? 'var(--primary)' : 'black',
+                                                color: selectedPhotoData.fitMode === 'fill' ? 'black' : 'var(--text)'
+                                            }}
+                                        >
+                                            Fill
+                                        </button>
+                                        <button 
+                                            onClick={() => setFitMode('stretch')}
+                                            className="fit-fill-btn"
+                                            style={{
+                                                border: selectedPhotoData.fitMode === 'stretch' ? '2px solid var(--primary)' : '1px solid var(--border)',
+                                                background: selectedPhotoData.fitMode === 'stretch' ? 'var(--primary)' : 'black',
+                                                color: selectedPhotoData.fitMode === 'stretch' ? 'black' : 'var(--text)'
+                                            }}
+                                        >
+                                            Stretch
+                                        </button>
+                                    </div>
+                                    <p style={{fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.5rem', lineHeight: '1.4'}}>
+                                        {selectedPhotoData.fitMode === 'fit' && '✓ Entire image visible, may have bars'}
+                                        {selectedPhotoData.fitMode === 'fill' && '✓ Fills frame, may crop edges'}
+                                        {selectedPhotoData.fitMode === 'stretch' && '✓ Distorts to fit exactly'}
+                                    </p>
+                                    {selectedPhotoData.fitMode !== 'stretch' && selectedPhotos.length === 0 && (
+                                        <p style={{fontSize: '0.8rem', color: '#4a9eff', marginTop: '0.5rem', lineHeight: '1.4'}}>
+                                            💡 Hold Ctrl/Cmd + drag to pan image
+                                        </p>
+                                    )}
+                                </div>
+                            )}
+
                             <div className="form-group">
                                 <label>Border Options</label>
                                 <div className="checkbox-group"><input type="checkbox" id="showBorder" checked={showBorder} onChange={(e) => setShowBorder(e.target.checked)} /><label htmlFor="showBorder">Show Border</label></div>
@@ -980,16 +1172,31 @@
                             <div className="info-card">
                                 <h4><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{verticalAlign: 'middle', marginRight: '0.25rem'}}><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>Quick Actions</h4>
                                 <div style={{display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '0.5rem'}}>
-                                    <button className="btn btn-secondary" onClick={duplicateSelectedPhoto} disabled={selectedPhoto === null} style={{width: '100%', fontSize: '0.9rem', padding: '0.6rem'}}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>Duplicate</button>
+                                    <button className="btn btn-secondary" onClick={duplicateSelectedPhoto} disabled={selectedPhoto === null && selectedPhotos.length === 0} style={{width: '100%', fontSize: '0.9rem', padding: '0.6rem'}}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>Duplicate</button>
                                     <div style={{display: 'flex', gap: '0.5rem'}}>
-                                        <button className="btn btn-secondary" onClick={rotateLeft} disabled={selectedPhoto === null} style={{flex: 1, fontSize: '0.9rem', padding: '0.6rem'}}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2.5 2v6h6M2.66 15.57a10 10 0 1 0 .57-8.38"></path></svg></button>
-                                        <button className="btn btn-secondary" onClick={rotateRight} disabled={selectedPhoto === null} style={{flex: 1, fontSize: '0.9rem', padding: '0.6rem'}}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38"></path></svg></button>
+                                        <button className="btn btn-secondary" onClick={rotateLeft} disabled={selectedPhoto === null && selectedPhotos.length === 0} style={{flex: 1, fontSize: '0.9rem', padding: '0.6rem'}}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2.5 2v6h6M2.66 15.57a10 10 0 1 0 .57-8.38"></path></svg></button>
+                                        <button className="btn btn-secondary" onClick={rotateRight} disabled={selectedPhoto === null && selectedPhotos.length === 0} style={{flex: 1, fontSize: '0.9rem', padding: '0.6rem'}}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38"></path></svg></button>
                                     </div>
-                                    <button className="btn btn-secondary" onClick={deleteSelectedPhoto} disabled={selectedPhoto === null} style={{width: '100%', fontSize: '0.9rem', padding: '0.6rem', background: '#dc3545'}}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>Delete</button>
+                                    <button className="btn btn-secondary" onClick={deleteSelectedPhoto} disabled={selectedPhoto === null && selectedPhotos.length === 0} style={{width: '100%', fontSize: '0.9rem', padding: '0.6rem', background: '#dc3545'}}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>Delete</button>
                                     <button className="btn btn-secondary" onClick={clearAll} disabled={photos.length === 0} style={{width: '100%', fontSize: '0.9rem', padding: '0.6rem'}}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>Clear All</button>
                                 </div>
                             </div>
-                            <div className="info-card" style={{borderColor: '#28a745'}}><h4>Canvas Info</h4><p>Photos on canvas: {photos.length}<br/>{selectedPhoto && 'Selected: 1 photo'}</p></div>
+                            <div className="info-card" style={{borderColor: '#4a9eff'}}>
+                                <h4>💡 Group Selection</h4>
+                                <p style={{fontSize: '0.85rem', lineHeight: '1.5'}}>
+                                    • Hold Shift + Click to select multiple<br/>
+                                    • Ctrl+A to select all<br/>
+                                    • Copy, move, rotate groups together
+                                </p>
+                            </div>
+                            <div className="info-card" style={{borderColor: '#28a745'}}>
+                                <h4>Canvas Info</h4>
+                                <p>
+                                    Photos on canvas: {photos.length}<br/>
+                                    {selectedPhotos.length > 0 && `Selected: ${selectedPhotos.length} photos`}
+                                    {selectedPhoto && selectedPhotos.length === 0 && 'Selected: 1 photo'}
+                                </p>
+                            </div>
                             <div className="form-group"><label>Export Format</label>
                                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
                                     <button onClick={() => setExportFormat('png')} style={{ padding: '0.7rem', border: exportFormat === 'png' ? '2px solid var(--primary)' : '1px solid var(--border)', borderRadius: '6px', background: exportFormat === 'png' ? 'var(--primary)' : 'black', color: exportFormat === 'png' ? 'black' : 'var(--text)', cursor: 'pointer', fontFamily: 'Outfit, sans-serif', fontWeight: exportFormat === 'png' ? '500' : '400', transition: 'all 0.2s', fontSize: '0.9rem' }}>PNG</button>
@@ -1002,10 +1209,33 @@
                             </div>
                         </div>
                         <div className="panel">
-                            <h2>Workspace</h2>
+                            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', paddingBottom: '0.75rem', borderBottom: '1px solid var(--border)'}}>
+                                <h2 style={{margin: 0, border: 'none', padding: 0}}>Workspace</h2>
+                                <div style={{display: 'flex', gap: '0.5rem', alignItems: 'center'}}>
+                                    <button onClick={zoomOut} className="btn btn-secondary" style={{padding: '0.5rem 0.75rem', fontSize: '0.9rem'}} title="Zoom Out">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <circle cx="11" cy="11" r="8"></circle>
+                                            <line x1="8" y1="11" x2="14" y2="11"></line>
+                                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                        </svg>
+                                    </button>
+                                    <span style={{fontSize: '0.85rem', minWidth: '50px', textAlign: 'center', color: 'var(--text-muted)'}}>{Math.round(zoom * 100)}%</span>
+                                    <button onClick={zoomIn} className="btn btn-secondary" style={{padding: '0.5rem 0.75rem', fontSize: '0.9rem'}} title="Zoom In">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <circle cx="11" cy="11" r="8"></circle>
+                                            <line x1="11" y1="8" x2="11" y2="14"></line>
+                                            <line x1="8" y1="11" x2="14" y2="11"></line>
+                                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                        </svg>
+                                    </button>
+                                    <button onClick={resetZoom} className="btn btn-secondary" style={{padding: '0.5rem 0.75rem', fontSize: '0.85rem'}} title="Reset Zoom">
+                                        100%
+                                    </button>
+                                </div>
+                            </div>
                             <div className="preview-container">
                                 <div className="canvas-wrapper">
-                                    <canvas ref={canvasRef} className="paper-canvas interactive-canvas" style={{ maxWidth: '100%', height: 'auto', border: '1px solid #ddd', cursor: dragging ? 'grabbing' : resizing ? 'nwse-resize' : 'default' }} onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp} onMouseLeave={handleMouseUp} />
+                                    <canvas ref={canvasRef} className="paper-canvas interactive-canvas" style={{ maxWidth: '90%', maxHeight: 'calc(100vh - 300px)', width: 'auto', height: 'auto', border: '1px solid #ddd', cursor: dragging ? 'grabbing' : resizing ? 'nwse-resize' : panningImage ? 'move' : 'default', transform: `scale(${zoom})`, transformOrigin: 'center', transition: 'transform 0.2s ease' }} onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp} onMouseLeave={handleMouseUp} />
                                 </div>
                             </div>
                         </div>
